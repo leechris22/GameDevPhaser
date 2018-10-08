@@ -5,6 +5,9 @@ let playState = function() {
 
 // Override create
 playState.prototype.create = function() {
+	// globally enable the arcade-style physics system
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+	new Enemy(game, 500, 500);
 	/*
 	// globally enable the arcade-style physics system
 	game.physics.startSystem(Phaser.Physics.ARCADE);
