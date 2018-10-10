@@ -7,6 +7,7 @@ let preloadState = function() {
 preloadState.prototype.preload = function() {
 	// INSERT IMAGES
 	game.load.image("StartButton", "assets/Images/startbutton.png");
+	game.load.image("Enemy", "assets/Images/enemy.png");
 	game.load.image("sky", "assets/Images/sky.png");
 	game.load.image("platform", "assets/Images/platform.png");
 	game.load.image("star", "assets/Images/star.png");
