@@ -7,14 +7,22 @@ let playState = function() {
 playState.prototype.create = function() {
 	// globally enable the arcade-style physics system
 	game.physics.startSystem(Phaser.Physics.ARCADE);
-	new Enemy(game, 500, 500);
-	this.player = new Player();
-	this.player.create(100, 100);
-	mainCamera = game.camera;
-	mainCamera.scale.x += 2;
-	mainCamera.scale.y += 2;
-	mainCamera.follow(this.player.player);
+	
+	// Add music
+	music = game.add.audio('schoolgirl', 1, true);
+	music.play();
 
+	console.log("I'm going to make the new Player now!");
+	this.game.global.player = new Player();
+	this.game.global.player.create(100, 100);
+	console.log("I finished making the new Player!");
+	
+	new Enemy(game, 500, 500);
+	
+	mainCamera.follow(this.player.player);
+	mainCamera.scale.y += 2;
+	mainCamera.scale.x += 2;
+	mainCamera = game.camera;
 	//char.spawn(100, 100);
 	//this.player = game.add.sprite(32, game.world.height - 150, "murph");
 	/*
@@ -71,7 +79,7 @@ playState.prototype.create = function() {
 
 // Override update
 playState.prototype.update = function() {
-	this.player.update();
+	this.game.global.player.update();
 	/*
 	// every frame, auto-separate player and starts from platform group
 	game.physics.arcade.collide(this.player, this.platforms);

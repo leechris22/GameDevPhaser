@@ -11,18 +11,25 @@ let Enemy = function(game, x, y) {
 	//this.animations.add("damage", [4,5,6], 10, true);
 	//this.animations.add("death", [4,5,6], 10, true);
 	
+		
 	// Set to center
 	this.anchor.setTo(0.5, 0.5);
 	
 	// Setup physics
-	game.physics.enable(this, Phaser.Physics.ARCADE);
+    game.physics.arcade.enable(this);
 	this.body.drag.set(25, 25);
+	
+	// Set properties
+	this.body.bounce.setTo(0.2, 0,2);
 	
 	// Setup AI
 	this.fsm = new FSM(this, this.idle);
 	this.spotted = false;
 	this.idleTimer = 0;
-		
+	this.target = this.game.global.player;
+	
+	
+	
 	game.add.existing(this);
 	
 	/* EXTRA
@@ -37,10 +44,12 @@ Enemy.prototype.constructor = Enemy;
 // For each frame
 Enemy.prototype.update = function() {
 	// For testing
+	//this.chase();
+	/*
 	if (this.game.input.keyboard.isDown(Phaser.KeyCode.A)) {
 		this.damage(1);
 		console.log(true);
-	}
+	}*/
 	// TEMP CODE
 	/*
 	this.fsm.update();
@@ -50,6 +59,7 @@ Enemy.prototype.update = function() {
 // When the enemy takes damage
 Enemy.prototype.damage = function(amount) {
 	this.health -= amount;
+	
 	if (this.health <= 0) {
 		this.kill();
 		return true;
@@ -90,12 +100,12 @@ Enemy.prototype.idle = function(ref) {
 		ref.idleTimer -= ref.game.time.physicsElapsed;
 	}
 }
-
-// Chase a target while on chase state
+*/
+// Chase the player while on chase state
 Enemy.prototype.chase = function(ref) {
 	if (!ref.spotted) {
 		ref.fsm.activeState = ref.idle;
 	} else {
-		//ref.game.physics.arcade.moveToXY(ref, 500, 500);
+		this.target;
 	}
-}*/
+}
