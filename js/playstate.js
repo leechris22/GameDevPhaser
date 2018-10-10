@@ -8,10 +8,8 @@ playState.prototype.create = function() {
 	// globally enable the arcade-style physics system
 	game.physics.startSystem(Phaser.Physics.ARCADE);
 	new Enemy(game, 500, 500);
-	console.log("I'm going to make the new Player now!");
 	this.player = new Player();
 	this.player.create(100, 100);
-	console.log("I finished making the new Player!");
 	//char.spawn(100, 100);
 	//this.player = game.add.sprite(32, game.world.height - 150, "murph");
 	/*
@@ -110,4 +108,3 @@ playState.prototype.collectStar = function(player, star){
 	this.score += 10;
 	this.scoreText.text = "Score: " + this.score;*/
 };
-console.log("I am all the way outside of playstate");

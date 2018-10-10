@@ -1,6 +1,4 @@
-let Player = function() {
-    console.log("I am leaving the constructor now!");
-};
+let Player = function() {};
 
 Player.prototype.preload = function() {};
 
