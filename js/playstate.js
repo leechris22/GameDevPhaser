@@ -19,10 +19,10 @@ playState.prototype.create = function() {
 	
 	new Enemy(game, 500, 500);
 
-	mainCamera = game.camera;
+/*	mainCamera = game.camera;
 	mainCamera.scale.x += 2;
 	mainCamera.scale.y += 2;
-	mainCamera.follow(this.game.global.player.player);
+	mainCamera.follow(this.game.global.player.player);*/
 	//char.spawn(100, 100);
 	//this.player = game.add.sprite(32, game.world.height - 150, "murph");
 	/*

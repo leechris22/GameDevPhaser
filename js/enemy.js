@@ -17,18 +17,23 @@ let Enemy = function(game, x, y) {
 	
 	// Setup physics
     game.physics.arcade.enable(this);
-	this.body.drag.set(25, 25);
+	this.body.maxVelocity.set(100,100);
+	
 	
 	// Set properties
 	this.body.bounce.setTo(0.2, 0,2);
 	
 	// Setup AI
 	this.fsm = new FSM(this, this.idle);
-	this.spotted = false;
+	this.activated = false;
+	
+	// Idle
 	this.idleTimer = 0;
+	// Chase
 	this.target = this.game.global.player;
-	
-	
+	// Path
+	this.path = [new Phaser.Point(0,0), new Phaser.Point(300,300), new Phaser.Point(300,0)];
+	this.pathcount = 0;
 	
 	game.add.existing(this);
 	
@@ -43,17 +48,15 @@ Enemy.prototype.constructor = Enemy;
 
 // For each frame
 Enemy.prototype.update = function() {
-	// For testing
-	//this.chase();
-	/*
-	if (this.game.input.keyboard.isDown(Phaser.KeyCode.A)) {
-		this.damage(1);
-		console.log(true);
-	}*/
 	// TEMP CODE
-	/*
-	this.fsm.update();
-	*/
+	//this.fsm.update();
+	this.patrol(this);
+
+	if (this.game.input.keyboard.isDown(Phaser.KeyCode.A)) {
+		this.activated = !this.activated;
+		console.log(true);
+	}
+	
 }
 
 // When the enemy takes damage
@@ -84,28 +87,47 @@ Enemy.prototype.kill = function() {
 	return this;
 };
 
-/*
 // Move around while on idle state
 Enemy.prototype.idle = function(ref) {
-	if (ref.spotted) {
+	if (ref.activated) {
 		ref.fsm.activeState = ref.chase;
 	} else if (ref.idleTimer <= 0) {
-		if (Phaser.Math.random() >= 0.5) {
-			ref.body.velocity = new Phaser.Point(Phaser.Math.random(-100,100),Phaser.Math.random(-100,100));
-		}
-		ref.idleTimer = Phaser.Math.random(1, 4);
-		console.log(ref.body.velocity);
-		console.log(ref.body.facing);
+		console.log(ref.idleTimer);
+		let direction = new Phaser.Point(Phaser.Math.random(-10,10),Phaser.Math.random(-10,10));
+		direction.normalize();
+		direction = Phaser.Point.multiply(direction, ref.body.maxVelocity)
+		ref.body.velocity.set(direction.x, direction.y);
+		ref.game.time.events.add(1000 * Phaser.Math.random(0.1,0.4), function() {
+			ref.body.velocity.set(0, 0);
+		}, this);
+		ref.idleTimer = Phaser.Math.random(2,5) * 1000;
 	} else {
-		ref.idleTimer -= ref.game.time.physicsElapsed;
+		ref.idleTimer -= ref.game.time.elapsedMS;
 	}
 }
-*/
-// Chase the player while on chase state
+
+// Chase the player
 Enemy.prototype.chase = function(ref) {
-	if (!ref.spotted) {
-		ref.fsm.activeState = ref.idle;
+	if (ref.activated) {
+		let direction = Phaser.Point.subtract(ref.target.player.body.center, ref.body.center);
+		direction.normalize();
+		direction = Phaser.Point.multiply(direction, ref.body.maxVelocity)
+		ref.body.velocity.set(direction.x, direction.y);
 	} else {
-		this.target;
+		ref.fsm.activeState = ref.idle;
+	}
+}
+
+// Patrol an area
+Enemy.prototype.patrol = function(ref) {
+	if (ref.pathcount >= ref.path.length) {
+		ref.pathcount = 0;
+	} else if (Phaser.Point.distance(ref.path[ref.pathcount], ref.body.center) > 1) {
+		let direction = Phaser.Point.subtract(ref.path[ref.pathcount], ref.body.center);
+		direction.normalize();
+		direction = Phaser.Point.multiply(direction, ref.body.maxVelocity)
+		ref.body.velocity.set(direction.x, direction.y);
+	} else {
+		ref.pathcount++;
 	}
 }
