@@ -9,7 +9,7 @@ Player.prototype.create = function(x, y) {
     // initialize all needed player variabels
     this.player.anchor.setTo(0.5, 0.5); // sets placement position of character to center of image
     this.player.health = 10;
-    this.player.ammo = 0;
+    this.player.ammo = 5;
     this.player.speed = 1.5;
     this.player.damage = 1;
     this.player.x = x;
@@ -33,7 +33,9 @@ Player.prototype.create = function(x, y) {
 
 Player.prototype.update = function() {
     this.movement();
-    this.shoot();
+    if(!this.player.wasMoved) {
+        this.shoot();
+    }
     //this.checkHitBox();
 };
 
@@ -137,13 +139,18 @@ Player.prototype.movement = function() {
 
 // function to use arrow powerup if the player has available arrows
 Player.prototype.shoot = function() {
-    // if (reasoning to shoot) {
+    /*if(game.input.activePointer.leftButton.isDown) {
         if(this.player.ammo > 0) {
+            console.log("I have ammo");
             // shoot arrow and lose an arrow
-
+            this.bullet = game.add.sprite(this.player.x, this.player.y, "murph");
+            this.bullet.inputEnabled = true;
+            game.physics.arcade.enable(this.bullet);
+            this.bullet.body.collideWorldBounds = true;
+            this.bullet.body.velocity.x = 100;
             this.player.ammo -= 1;
         }   
-    //}
+    }*/
 };
 
 // helper function for checking the hitboxs, updates the players direction
