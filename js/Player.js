@@ -88,8 +88,8 @@ Player.prototype.takeDamage = function(target) {
 Player.prototype.movement = function() {
     // if the left mouse button is being held down
     let touch = game.input.activePointer.leftButton;
-    let touch_x = game.input.activePointer.x;
-    let touch_y = game.input.activePointer.y;
+    let touch_x = game.input.activePointer.screenX;
+    let touch_y = game.input.activePointer.screenY;
 
     // reinitialize all movement direction to false
     this.player.movingLeft = false;
