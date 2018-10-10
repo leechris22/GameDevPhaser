@@ -18,11 +18,11 @@ playState.prototype.create = function() {
 	console.log("I finished making the new Player!");
 	
 	new Enemy(game, 500, 500);
-	
-	mainCamera.follow(this.player.player);
-	mainCamera.scale.y += 2;
-	mainCamera.scale.x += 2;
+
 	mainCamera = game.camera;
+	mainCamera.scale.x += 2;
+	mainCamera.scale.y += 2;
+	mainCamera.follow(this.game.global.player.player);
 	//char.spawn(100, 100);
 	//this.player = game.add.sprite(32, game.world.height - 150, "murph");
 	/*
