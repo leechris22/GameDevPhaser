@@ -65,7 +65,6 @@ playState.prototype.create = function() {
 
 // Override update
 playState.prototype.update = function() {
-	//console.log("I am updating in the playstate!");
 	this.player.update();
 	/*
 	// every frame, auto-separate player and starts from platform group
