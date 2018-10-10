@@ -13,6 +13,9 @@ preloadState.prototype.preload = function() {
 	game.load.image("star", "assets/Images/star.png");
 	game.load.spritesheet("murph", "assets/Images/character.png", 32, 48);
 	game.load.audio("schoolgirl", "assets/Music/schoolgirldraft.wav");
+    game.load.image("pickupArrow", "assets/Images/temp_arrow.png");
+    game.load.image("pickupHealth", "assets/Images/temp_health.png");
+
 };
 
 // Override create, start MenuState
