@@ -10,7 +10,11 @@ playState.prototype.create = function() {
 	new Enemy(game, 500, 500);
 	this.player = new Player();
 	this.player.create(100, 100);
-	this.initializeCamera(this.player);
+	mainCamera = game.camera;
+	mainCamera.scale.x += 2;
+	mainCamera.scale.y += 2;
+	mainCamera.follow(this.player.player);
+
 	//char.spawn(100, 100);
 	//this.player = game.add.sprite(32, game.world.height - 150, "murph");
 	/*
@@ -100,12 +104,6 @@ playState.prototype.update = function() {
 		this.player.body.velocity.y = -350;
 	}*/
 	
-};
-
-playState.prototype.initializeCamera = function(p) {
-	mainCamera = game.camera;
-	mainCamera.scale.x += 5;
-	mainCamera.scale.y += 5;
 };
 
 playState.prototype.collectStar = function(player, star){
