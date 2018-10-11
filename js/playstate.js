@@ -23,6 +23,8 @@ playState.prototype.create = function() {
 	mainCamera.scale.x += 2;
 	mainCamera.scale.y += 2;
 	mainCamera.follow(this.game.global.player.player);*/
+	this.spawner = new Spawn(game, 20);
+	
 	//char.spawn(100, 100);
 	//this.player = game.add.sprite(32, game.world.height - 150, "murph");
 	/*
@@ -80,6 +82,7 @@ playState.prototype.create = function() {
 // Override update
 playState.prototype.update = function() {
 	this.game.global.player.update();
+	//this.spawner.update();
 	/*
 	// every frame, auto-separate player and starts from platform group
 	game.physics.arcade.collide(this.player, this.platforms);
