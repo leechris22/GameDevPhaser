@@ -2,15 +2,15 @@ let Player = function() {};
 
 Player.prototype.preload = function() {};
 
-Player.prototype.create = function(x, y) {
+Player.prototype.create = function(x, y, cam) {
     // construct sprite for the player
     this.player = game.add.sprite(x, y, "murph");
 
     // initialize all needed player variabels
-    this.player.anchor.setTo(0.5, 0.5); // sets placement position of character to center of image
+    this.player.anchor.setTo(0.5, 0.5);
     this.player.health = 10;
-    this.player.ammo = 5;
-    this.player.speed = 1.5;
+    this.player.ammo = 0;
+    this.player.speed = 2;
     this.player.damage = 1;
     this.player.x = x;
     this.player.y = y;
@@ -20,6 +20,9 @@ Player.prototype.create = function(x, y) {
     this.player.movingDown = false;
     this.player.direction = "S";
     this.player.attacking = 0;
+    this.player.camera = cam;
+    this.player.timer = 0;
+    this.player.clock = 0;
 
     // add in animations for the player
     this.player.animations.add("left", [0, 1, 2, 3], 10, true);
@@ -28,15 +31,11 @@ Player.prototype.create = function(x, y) {
     // set up player physics
     this.player.inputEnabled = true;
     game.physics.arcade.enable(this.player);
-    this.player.body.collideWorldBounds = true;
 };
 
 Player.prototype.update = function() {
+    game.input.activePointer.leftButton.onUp.add(this.shoot, this, 0);
     this.movement();
-    if(!this.player.wasMoved) {
-        this.shoot();
-    }
-    //this.checkHitBox();
 };
 
 // function to check collision hit box and call attack() or takeDamage() accordingly
@@ -48,24 +47,20 @@ Player.prototype.checkHitBox = function(target) {
     
     // determine if the player is attacking or if they have been attacked
     this.isAttacking(target);
-        if(this.player.attacking) { // player successfully attacked so call attack
-            this.attack(target);
-        } else { // player was attacked so call takeDamage
-            this.takeDamage(target);
-        }
+    if(this.player.attacking) { // player successfully attacked so call attack
+        this.attack(target);
+    } else { // player was attacked so call takeDamage
+        this.takeDamage(target);
+    }
 };
 
 // function to do processing for attacking an enemy 
 Player.prototype.attack = function(target) {
     // play player attack animation
     this.player.animations.play("attack");
-
-    // flash effect on enemy
-    target.animation.stop();
-    target.frame = 0; // play frame that has white fill of sprite
     
     // take health from target
-    target.health -= this.player.damage;
+    target.damage(this.player.damage);
 
     // knockback target
     target.body.bounce.setTo(0.4, 0.4);
@@ -88,8 +83,8 @@ Player.prototype.takeDamage = function(target) {
 Player.prototype.movement = function() {
     // if the left mouse button is being held down
     let touch = game.input.activePointer.leftButton;
-    let touch_x = game.input.activePointer.screenX;
-    let touch_y = game.input.activePointer.screenY;
+    let touch_x = game.input.mousePointer.worldX/3;
+    let touch_y = game.input.mousePointer.worldY/3;
 
     // reinitialize all movement direction to false
     this.player.movingLeft = false;
@@ -100,11 +95,11 @@ Player.prototype.movement = function() {
     // check for if the left mouse button is being held down
     if(touch.isDown) {
         // movement adjustment for the x coordinate of the player
-        if(touch_x > this.player.x) { // click is to left of player
+        if((touch_x - 4.5) > (this.player.x + 4.5)) { // click is to left of player
             this.player.x += this.player.speed;
             this.player.body.velocity.x = this.speed;
             this.player.movingRight = true;
-        } else if(touch_x < this.player.x) { // click is to right of player
+        } else if((touch_x - 4.5) < (this.player.x - 4.5)) { // click is to right of player
             this.player.x -= this.player.speed;
             this.player.body.velocity.x = -this.speed;
             this.player.movingLeft = true;
@@ -113,11 +108,11 @@ Player.prototype.movement = function() {
         }
 
         // movement adjustment for the y coordinate of the player
-        if(touch_y > this.player.y) { // click is below player
+        if((touch_y - 4.5) > (this.player.y + 4.5)) { // click is below player
             this.player.y += this.player.speed;
             this.player.body.velocity.y = this.speed;
             this.player.movingDown = true;
-        } else if(touch_y < this.player.y) { // click is above player
+        } else if((touch_y - 4.5) < (this.player.y - 4.5)) { // click is above player
             this.player.y -= this.player.speed;
             this.player.body.velocity.y = -this.speed;
             this.player.movingUp = true;
@@ -139,18 +134,15 @@ Player.prototype.movement = function() {
 
 // function to use arrow powerup if the player has available arrows
 Player.prototype.shoot = function() {
-    /*if(game.input.activePointer.leftButton.isDown) {
-        if(this.player.ammo > 0) {
-            console.log("I have ammo");
-            // shoot arrow and lose an arrow
-            this.bullet = game.add.sprite(this.player.x, this.player.y, "murph");
-            this.bullet.inputEnabled = true;
-            game.physics.arcade.enable(this.bullet);
-            this.bullet.body.collideWorldBounds = true;
-            this.bullet.body.velocity.x = 100;
-            this.player.ammo -= 1;
-        }   
-    }*/
+    if(this.player.ammo > 0) {
+        // shoot arrow and lose an arrow
+        this.bullet = game.add.sprite(this.player.x, this.player.y, "murph");
+        this.bullet.inputEnabled = true;
+        this.bullet.anchor.setTo(0.5, 0.5);
+        game.physics.arcade.enable(this.bullet);
+        this.shootDirection(this.bullet);
+        this.player.ammo -= 1;
+    }
 };
 
 // helper function for checking the hitboxs, updates the players direction
@@ -203,4 +195,19 @@ Player.prototype.isAttacking = function(target) {
             this.player.attacking = true;
         }
     }
+};
+
+Player.prototype.shootDirection = function(bullet) {
+    // update the direction of the player to where the arrow was shot
+    this.getDirection();
+
+    // determine the velocity of the bullet according to the direction
+    if(this.player.direction == "NE") { bullet.body.velocity.setTo(500, -500); }
+    else if(this.player.direction == "SE") { bullet.body.velocity.setTo(500, 500); }
+    else if(this.player.direction == "SW") { bullet.body.velocity.setTo(-500, 500); }
+    else if(this.player.direction == "NW") { bullet.body.velocity.setTo(-500, -500); }
+    else if(this.player.direction == "N") { bullet.body.velocity.setTo(0, -500); }
+    else if(this.player.direction == "E") { bullet.body.velocity.setTo(500, 0); }
+    else if(this.player.direction == "S") { bullet.body.velocity.setTo(0, 500); }
+    else if(this.player.direction == "W") { bullet.body.velocity.setTo(-500, 0); }
 };
