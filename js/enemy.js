@@ -11,26 +11,27 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
 	//this.animations.add("damage", [4,5,6], 10, true);
 	//this.animations.add("death", [4,5,6], 10, true);
 	
-		
 	// Set to center
-	this.anchor.setTo(0.5, 0.5);
+	this.maxHealth = 1;
+	this.anchor.setTo(0.5);
 	
 	// Setup physics
     game.physics.arcade.enable(this);
-	this.body.maxVelocity.set(100,100);
-	this.body.bounce.setTo(0.2, 0,2);
+	let scale = game.global.scale;
+	this.body.setSize(this.width*scale, this.height*scale, -this.width, -this.height);
+	this.body.maxVelocity.setTo(100);
+	this.body.bounce.setTo(0.2);
 	
 	// Setup AI
 	this.fsm = new FSM(this, this.idle);
-	this.activated = false;
 	
-	// Idle
 	this.idleTimer = 0;
-	// Chase
+	
 	this.target = this.game.global.player.player;
-	// Path
+
 	this.path = [new Phaser.Point(0,0), new Phaser.Point(300,300), new Phaser.Point(300,0)];
 	this.pathcount = 0;
+	
 	
 	game.add.existing(this);
 	
@@ -45,16 +46,11 @@ Enemy.prototype.constructor = Enemy;
 
 // For each frame
 Enemy.prototype.update = function() {
-	// TEMP CODE
-	//this.fsm.update();
-	this.patrol(this);
-	
-	if (this.game.input.keyboard.isDown(Phaser.KeyCode.A)) {
-		console.log(this.body.x);
-	}
+	this.chase(this);
 }
 
-// When the enemy takes damage
+// When the enemy takes damage, reduce hp by amount
+// At 0 hp, call kill function
 Enemy.prototype.damage = function(amount) {
 	this.health -= amount;
 	
@@ -66,10 +62,10 @@ Enemy.prototype.damage = function(amount) {
 	return false;
 }
 
-// When the enemy dies, play death animation
+// When this dies, play death animation
 Enemy.prototype.kill = function() {
 	this.alive = false;
-	this.body.velocity.setTo(0,0);
+	this.body.velocity.setTo(0);
 	this.animations.stop();
 	//this.animations.play('death');
 	this.events.onAnimationComplete.addOnce(function() {
@@ -91,41 +87,42 @@ Enemy.prototype.remove = function() {
 };
 
 // Move around while on idle state
+// ref is a reference to this object, so call as idle(this)
 Enemy.prototype.idle = function(ref) {
-	if (ref.activated) {
-		ref.fsm.activeState = ref.chase;
-	} else if (ref.idleTimer <= 0) {
-		let direction = new Phaser.Point(Phaser.Math.random(-10,10), Phaser.Math.random(-10,10));
+	if (ref.idleTimer <= 0) {
+		let direction = new Phaser.Point(Phaser.Math.random(-10, 10), Phaser.Math.random(-10, 10));
 		direction = Phaser.Point.multiply(direction.normalize(), ref.body.maxVelocity)
 		ref.body.velocity.set(direction.x, direction.y);
-		ref.game.time.events.add(1000 * Phaser.Math.random(0.1,0.4), function() {
-			ref.body.velocity.set(0, 0);
+		ref.game.time.events.add(1000 * Phaser.Math.random(0.1, 0.4), function() {
+			ref.body.velocity.set(0);
 		}, this);
-		ref.idleTimer = Phaser.Math.random(2,5) * 1000;
+		ref.idleTimer = Phaser.Math.random(2, 5) * 1000;
 	} else {
 		ref.idleTimer -= ref.game.time.elapsedMS;
 	}
 }
 
 // Chase the player
+// ref is a reference to this object, so call as chase(this)
 Enemy.prototype.chase = function(ref) {
-	if (ref.activated) {
+	if (ref.target.body.center.distance(ref.body.center) > 5) {
 		let direction = Phaser.Point.subtract(ref.target.body.center, ref.body.center);
 		direction = Phaser.Point.multiply(direction.normalize(), ref.body.maxVelocity)
 		ref.body.velocity.set(direction.x, direction.y);
 	} else {
-		ref.fsm.activeState = ref.idle;
+		ref.body.velocity.set(0);
 	}
 }
 
 // Patrol an area
+// ref is a reference to this object, so call as patrol(this)
 Enemy.prototype.patrol = function(ref) {
 	if (ref.pathcount >= ref.path.length) {
 		ref.pathcount = 0;
-	} else if (Phaser.Point.distance(ref.path[ref.pathcount], ref.body.center) > 1) {
-		let direction = Phaser.Point.subtract(ref.path[ref.pathcount], ref.body.center);
+	} else if (ref.path[ref.pathcount].distance(new Phaser.Point(ref.centerX, ref.centerY)) > 5) {
+		let direction = Phaser.Point.subtract(ref.path[ref.pathcount], new Phaser.Point(ref.centerX, ref.centerY));
 		direction = Phaser.Point.multiply(direction.normalize(), ref.body.maxVelocity)
-		ref.body.velocity.set(direction.x, direction.y);
+		ref.body.velocity.setTo(direction.x, direction.y);
 	} else {
 		ref.pathcount++;
 	}

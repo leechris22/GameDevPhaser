@@ -15,7 +15,7 @@ preloadState.prototype.preload = function() {
 	game.load.audio("schoolgirl", "assets/Music/schoolgirldraft.wav");
     game.load.image("pickupArrow", "assets/Images/temp_arrow.png");
     game.load.image("pickupHealth", "assets/Images/temp_health.png");
-
+    game.load.image("Background", "assets/Images/background.png");
 };
 
 // Override create, start MenuState
