@@ -7,7 +7,7 @@ let Spawn = function(game, size) {
 	
 	// Set up offscreen spawns
 	this.spawnbox = game.camera.view;
-	this.scale = game.camera.scale;
+	this.scale = game.global.scale;
 	
 	// Set up a list of spawns
 	this.spawners = [];
@@ -18,28 +18,22 @@ let Spawn = function(game, size) {
 	this.enemies.enableBody = true;
 	this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
 	this.enemies.createMultiple(size, "Enemy");
-		
-	/* EXTRA
-	cursors = game.input.keyboard.createCursorKeys();
-	cursors.left.isDown
-	*/
 };
 
 // For each frame
 Spawn.prototype.update = function() {
-	this.game.physics.arcade.collide(this.enemies);
+	/*this.game.physics.arcade.collide(this.enemies);
 	
 	// TESTING
-	//this.fsm.update();
-/*
 	if (this.game.input.keyboard.isDown(Phaser.KeyCode.D)) {
 		this.spawnOffscreen(0);
 	}
 
 	if (this.game.input.keyboard.isDown(Phaser.KeyCode.A)) {
-		
+		console.log(this.enemies.countLiving());
 	}
-*/	
+
+	this.despawnEnemies();*/
 }
 
 // Changes the maximum number of enemies
@@ -69,16 +63,16 @@ Spawn.prototype.spawnOffscreen = function(side) {
 	if (enemy) {
 		switch (side) {
 			case 0:
-				enemy.reset(this.spawnbox.randomX/this.scale.x, this.spawnbox.top/this.scale.y-50);
+				enemy.reset(this.spawnbox.randomX/this.scale, this.spawnbox.top/this.scale-100);
 				break;
 			case 1:
-				enemy.reset(this.spawnbox.randomX/this.scale.x, this.spawnbox.bottom/this.scale.y+50);
+				enemy.reset(this.spawnbox.randomX/this.scale, this.spawnbox.bottom/this.scale+100);
 				break;
 			case 2:
-				enemy.reset(this.spawnbox.left/this.scale.x-50, this.spawnbox.randomY/this.scale.y);
+				enemy.reset(this.spawnbox.left/this.scale-100, this.spawnbox.randomY/this.scale);
 				break;
 			case 3:
-				enemy.reset(this.spawnbox.right/this.scale.x+50, this.spawnbox.randomY/this.scale.y);
+				enemy.reset(this.spawnbox.right/this.scale+100, this.spawnbox.randomY/this.scale);
 				break;
 		}
 		return true;
@@ -105,4 +99,15 @@ Spawn.prototype.spawnEnemy = function(i) {
 		return true;
 	}
 	return false;
+}
+
+// Despawn any enemies that go too far offscreen
+Spawn.prototype.despawnEnemies = function() {
+	let despawnRect = this.spawnbox.clone();
+	despawnRect.inflate(350, 350);
+	this.enemies.forEachAlive(function(child) {
+		if (!despawnRect.contains(child.centerX*this.scale, child.centerY*this.scale)) {
+			child.remove();
+		}
+	}, this);
 }

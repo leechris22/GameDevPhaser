@@ -29,7 +29,7 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
 	
 	this.target = this.game.global.player.player;
 
-	this.path = [new Phaser.Point(0,0), new Phaser.Point(300,300), new Phaser.Point(300,0)];
+	this.path = [];
 	this.pathcount = 0;
 	
 	
@@ -85,6 +85,11 @@ Enemy.prototype.remove = function() {
 	this.visible = false;
 	return this;
 };
+
+// Add point to the path
+Enemy.prototype.addPath = function(point) {
+	this.path.push(point);
+}
 
 // Move around while on idle state
 // ref is a reference to this object, so call as idle(this)
