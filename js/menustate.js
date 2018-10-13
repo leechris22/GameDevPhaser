@@ -7,7 +7,7 @@ let menuState = function() {
 menuState.prototype.create = function() {
 	// Add game title text
 	let style = {
-		font: "bold 30pt Arial",
+		font: "bold 60pt Arial",
 		fill: "#ffffff",
 		align: "center"
 	};
@@ -16,8 +16,14 @@ menuState.prototype.create = function() {
 	
 	// Add start button
 	let startButton = game.add.button(0, 0, "StartButton", function(Button, Pointer, isOver) {
-		game.state.start("PlayState");
-	});
+		// Fade to black
+		game.camera.fade('#000000');
+		game.camera.onFadeComplete.add(function() {
+			game.state.start("PlayState");
+		},this);
+	}, this, 1, 0, 2, 0);
+	startButton.scale.x = 3;
+	startButton.scale.y = 3;
 	startButton.centerX = game.world.centerX;
-	startButton.centerY = game.world.centerY;
+	startButton.centerY = game.world.centerY + 250;
 };
