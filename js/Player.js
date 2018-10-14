@@ -107,6 +107,11 @@ Player.prototype.takeDamage = function(target) {
     // flash effect on player
     /*this.player.animations.stop();
     this.player.frame = 4; // play frame that has white fill of sprite*/
+
+    // check for if player has been killed
+    if(this.player.health <= 0) {
+        this.kill();
+    }
 };
 
 // player movement function to be called in update
@@ -197,6 +202,7 @@ Player.prototype.getDirection = function() {
     }
 };
 
+// helper function to detemine which direction the arrow was shot
 Player.prototype.shootDirection = function(bullet) {
     // update the direction of the player to where the arrow was shot
     this.getDirection();
@@ -226,4 +232,9 @@ Player.prototype.shootDirection = function(bullet) {
         bullet.body.velocity.setTo(-500, 0); 
         bullet.angle += 180;
     }
+};
+
+// function to kill player when the player runs out of health
+Player.prototype.kill = function() {
+    // determine functionality for when the player dies
 };
