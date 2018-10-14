@@ -9,7 +9,7 @@ Player.prototype.create = function(x, y, cam) {
     // initialize all needed player variabels
     this.player.anchor.setTo(0.5, 0.5);
     this.player.health = 10;
-    this.player.ammo = 0;
+    this.player.ammo = 5;
     this.player.speed = 2;
     this.player.damage = 1;
     this.player.x = x;
@@ -34,12 +34,11 @@ Player.prototype.create = function(x, y, cam) {
 };
 
 Player.prototype.update = function() {
-    game.input.activePointer.leftButton.onUp.add(this.shoot, this, 0);
     this.movement();
+    game.input.onTap.add(this.shoot, this);
 };
 
 // function to check collision hit box and call attack() or takeDamage() accordingly
-    // will be called from wherever collisions between player and group of enemies is checked
 Player.prototype.checkHitBox = function(target) {
     // reinitialize everything that needs to be updated after actions
     this.player.body.bounce.setTo(0, 0);
@@ -54,10 +53,41 @@ Player.prototype.checkHitBox = function(target) {
     }
 };
 
+// helper function for checking the hitboxs, determines if player is attacking or being attacked
+Player.prototype.isAttacking = function(target) {
+    // update the direction of the player when the collision occured
+    this.getDirection();
+
+    // conditionals to determine if the player successfully attacked
+    if(this.player.x < target.x) { // all the east checks
+        if((this.player.y < target.y) && (this.player.direction == "SE")) {
+            this.player.attacking = true;
+        } else if((this.player.y > target.y) && (this.player.direction == "NE")) {
+            this.player.attacking = true;
+        } else if((this.player.y == target.y) && (this.player.direction == "E")) {
+            this.player.attacking = true;
+        }
+    } else if(this.player.x > target.x) { // all the west checks
+        if((this.player.y < target.y) && (this.player.direction == "SW")) {
+            this.player.attacking = true;
+        } else if((this.player.y > target.y) && (this.player.direction == "NW")) {
+            this.player.attacking = true;
+        } else if((this.player.y == target.y) && (this.player.direction == "W")) {
+            this.player.attacking = true;
+        }
+    } else if(this.player.x == target.x) { // north and south checks
+        if((this.player.y < target.y) && (this.player.direction == "S")) {
+            this.player.attacking = true;
+        } else if((this.player.y > target.y) && (this.player.direction == "N")) {
+            this.player.attacking = true;
+        }
+    }
+};
+
 // function to do processing for attacking an enemy 
 Player.prototype.attack = function(target) {
     // play player attack animation
-    this.player.animations.play("attack");
+    //this.player.animations.play("attack");
     
     // take health from target
     target.damage(this.player.damage);
@@ -69,22 +99,27 @@ Player.prototype.attack = function(target) {
 // function to do processing for being attacked by an enemy
 Player.prototype.takeDamage = function(target) {
     // take health from player by target.damage
-    this.player.health -= target.damage;
+    this.player.health -= target.power;
 
     // knockback player
-    this.player.body.bounce.setTo(0.4, 0.4);
+    //this.player.body.bounce.setTo(0.4, 0.4);
 
     // flash effect on player
-    this.player.animations.stop();
-    this.player.frame = 4; // play frame that has white fill of sprite
+    /*this.player.animations.stop();
+    this.player.frame = 4; // play frame that has white fill of sprite*/
+
+    // check for if player has been killed
+    if(this.player.health <= 0) {
+        this.kill();
+    }
 };
 
 // player movement function to be called in update
 Player.prototype.movement = function() {
     // if the left mouse button is being held down
     let touch = game.input.activePointer.leftButton;
-    let touch_x = game.input.mousePointer.worldX/3;
-    let touch_y = game.input.mousePointer.worldY/3;
+    let touch_x = game.input.mousePointer.worldX/2;
+    let touch_y = game.input.mousePointer.worldY/2;
 
     // reinitialize all movement direction to false
     this.player.movingLeft = false;
@@ -136,9 +171,10 @@ Player.prototype.movement = function() {
 Player.prototype.shoot = function() {
     if(this.player.ammo > 0) {
         // shoot arrow and lose an arrow
-        this.bullet = game.add.sprite(this.player.x, this.player.y, "murph");
+        this.bullet = game.add.sprite(this.player.x, this.player.y, "arrow");
+        this.bullet.scale.setTo(0.5, 0.5);
         this.bullet.inputEnabled = true;
-        this.bullet.anchor.setTo(0.5, 0.5);
+        this.bullet.anchor.setTo(0, 0);
         game.physics.arcade.enable(this.bullet);
         this.shootDirection(this.bullet);
         this.player.ammo -= 1;
@@ -166,48 +202,39 @@ Player.prototype.getDirection = function() {
     }
 };
 
-// helper function for checking the hitboxs, determines if player is attacking or being attacked
-Player.prototype.isAttacking = function(target) {
-    // update the direction of the player when the collision occured
-    this.getDirection();
-
-    // conditionals to determine if the player successfully attacked
-    if(this.player.x < target.x) { // all the east checks
-        if((this.player.y < target.y) && (this.player.direction == "SE")) {
-            this.player.attacking = true;
-        } else if((this.player.y > target.y) && (this.player.direction == "NE")) {
-            this.player.attacking = true;
-        } else if((this.player.y == target.y) && (this.player.direction == "E")) {
-            this.player.attacking = true;
-        }
-    } else if(this.player.x > target.x) { // all the west checks
-        if((this.player.y < target.y) && (this.player.direction == "SW")) {
-            this.player.attacking = true;
-        } else if((this.player.y > target.y) && (this.player.direction == "NW")) {
-            this.player.attacking = true;
-        } else if((this.player.y == target.y) && (this.player.direction == "W")) {
-            this.player.attacking = true;
-        }
-    } else if(this.player.x == target.x) { // north and south checks
-        if((this.player.y < target.y) && (this.player.direction == "S")) {
-            this.player.attacking = true;
-        } else if((this.player.y > target.y) && (this.player.direction == "N")) {
-            this.player.attacking = true;
-        }
-    }
-};
-
+// helper function to detemine which direction the arrow was shot
 Player.prototype.shootDirection = function(bullet) {
     // update the direction of the player to where the arrow was shot
     this.getDirection();
 
     // determine the velocity of the bullet according to the direction
-    if(this.player.direction == "NE") { bullet.body.velocity.setTo(500, -500); }
-    else if(this.player.direction == "SE") { bullet.body.velocity.setTo(500, 500); }
-    else if(this.player.direction == "SW") { bullet.body.velocity.setTo(-500, 500); }
-    else if(this.player.direction == "NW") { bullet.body.velocity.setTo(-500, -500); }
-    else if(this.player.direction == "N") { bullet.body.velocity.setTo(0, -500); }
-    else if(this.player.direction == "E") { bullet.body.velocity.setTo(500, 0); }
-    else if(this.player.direction == "S") { bullet.body.velocity.setTo(0, 500); }
-    else if(this.player.direction == "W") { bullet.body.velocity.setTo(-500, 0); }
+    if(this.player.direction == "NE") {
+        bullet.body.velocity.setTo(500, -500);
+        bullet.angle -= 45;
+    } else if(this.player.direction == "SE") {
+        bullet.body.velocity.setTo(500, 500); 
+        bullet.angle += 45; 
+    } else if(this.player.direction == "SW") {
+        bullet.body.velocity.setTo(-500, 500);
+        bullet.angle += 135;
+    } else if(this.player.direction == "NW") {
+        bullet.body.velocity.setTo(-500, -500);
+        bullet.angle -= 135;
+    } else if(this.player.direction == "N") {
+        bullet.body.velocity.setTo(0, -500);
+        bullet.angle -= 90;
+    } else if(this.player.direction == "E") {
+        bullet.body.velocity.setTo(500, 0);
+    } else if(this.player.direction == "S") {
+        bullet.body.velocity.setTo(0, 500);
+        bullet.angle += 90;
+    } else if(this.player.direction == "W") {
+        bullet.body.velocity.setTo(-500, 0); 
+        bullet.angle += 180;
+    }
+};
+
+// function to kill player when the player runs out of health
+Player.prototype.kill = function() {
+    // determine functionality for when the player dies
 };
