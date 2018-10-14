@@ -9,7 +9,7 @@ Player.prototype.create = function(x, y, cam) {
     // initialize all needed player variabels
     this.player.anchor.setTo(0.5, 0.5);
     this.player.health = 10;
-    this.player.ammo = 0;
+    this.player.ammo = 5;
     this.player.speed = 2;
     this.player.damage = 1;
     this.player.x = x;
@@ -34,8 +34,8 @@ Player.prototype.create = function(x, y, cam) {
 };
 
 Player.prototype.update = function() {
-    game.input.activePointer.leftButton.onUp.add(this.shoot, this, 0);
     this.movement();
+    game.input.onTap.add(this.shoot, this);
 };
 
 // function to check collision hit box and call attack() or takeDamage() accordingly
@@ -83,8 +83,8 @@ Player.prototype.takeDamage = function(target) {
 Player.prototype.movement = function() {
     // if the left mouse button is being held down
     let touch = game.input.activePointer.leftButton;
-    let touch_x = game.input.mousePointer.worldX/3;
-    let touch_y = game.input.mousePointer.worldY/3;
+    let touch_x = game.input.mousePointer.worldX/2;
+    let touch_y = game.input.mousePointer.worldY/2;
 
     // reinitialize all movement direction to false
     this.player.movingLeft = false;
@@ -136,9 +136,10 @@ Player.prototype.movement = function() {
 Player.prototype.shoot = function() {
     if(this.player.ammo > 0) {
         // shoot arrow and lose an arrow
-        this.bullet = game.add.sprite(this.player.x, this.player.y, "murph");
+        this.bullet = game.add.sprite(this.player.x, this.player.y, "arrow");
+        this.bullet.scale.setTo(0.5, 0.5);
         this.bullet.inputEnabled = true;
-        this.bullet.anchor.setTo(0.5, 0.5);
+        this.bullet.anchor.setTo(0, 0);
         game.physics.arcade.enable(this.bullet);
         this.shootDirection(this.bullet);
         this.player.ammo -= 1;
@@ -202,12 +203,28 @@ Player.prototype.shootDirection = function(bullet) {
     this.getDirection();
 
     // determine the velocity of the bullet according to the direction
-    if(this.player.direction == "NE") { bullet.body.velocity.setTo(500, -500); }
-    else if(this.player.direction == "SE") { bullet.body.velocity.setTo(500, 500); }
-    else if(this.player.direction == "SW") { bullet.body.velocity.setTo(-500, 500); }
-    else if(this.player.direction == "NW") { bullet.body.velocity.setTo(-500, -500); }
-    else if(this.player.direction == "N") { bullet.body.velocity.setTo(0, -500); }
-    else if(this.player.direction == "E") { bullet.body.velocity.setTo(500, 0); }
-    else if(this.player.direction == "S") { bullet.body.velocity.setTo(0, 500); }
-    else if(this.player.direction == "W") { bullet.body.velocity.setTo(-500, 0); }
+    if(this.player.direction == "NE") {
+        bullet.body.velocity.setTo(500, -500);
+        bullet.angle -= 45;
+    } else if(this.player.direction == "SE") {
+        bullet.body.velocity.setTo(500, 500); 
+        bullet.angle += 45; 
+    } else if(this.player.direction == "SW") {
+        bullet.body.velocity.setTo(-500, 500);
+        bullet.angle += 135;
+    } else if(this.player.direction == "NW") {
+        bullet.body.velocity.setTo(-500, -500);
+        bullet.angle -= 135;
+    } else if(this.player.direction == "N") {
+        bullet.body.velocity.setTo(0, -500);
+        bullet.angle -= 90;
+    } else if(this.player.direction == "E") {
+        bullet.body.velocity.setTo(500, 0);
+    } else if(this.player.direction == "S") {
+        bullet.body.velocity.setTo(0, 500);
+        bullet.angle += 90;
+    } else if(this.player.direction == "W") {
+        bullet.body.velocity.setTo(-500, 0); 
+        bullet.angle += 180;
+    }
 };

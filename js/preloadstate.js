@@ -13,6 +13,7 @@ preloadState.prototype.preload = function() {
 	game.load.image("sky", "assets/Images/sky.png");
 	game.load.image("platform", "assets/Images/platform.png");
 	game.load.image("star", "assets/Images/star.png");
+	game.load.image("arrow", "assets/Images/arrow.png");
 	game.load.spritesheet("murph", "assets/Images/character.png", 32, 48);
     game.load.image("pickupArrow", "assets/Images/temp_arrow.png");
     game.load.image("pickupHealth", "assets/Images/temp_health.png");
