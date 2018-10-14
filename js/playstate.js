@@ -3,11 +3,16 @@ let playState = function() {
 	// EMPTY
 };
 
+//var map;
+
 // Override create
 playState.prototype.create = function() {
 	// Set the playing field
 	game.world.setBounds(-1500, -750, 3000, 1500);
 	game.physics.startSystem(Phaser.Physics.ARCADE);
+
+	//	Add map to game
+	//map = game.add.tilemap(/*Name of tilemap*/);
 	
 	// Add the music and visuals
 	this.background = game.add.sprite(-1500, -750, "Background");
