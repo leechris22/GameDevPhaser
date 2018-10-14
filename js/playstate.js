@@ -11,9 +11,9 @@ playState.prototype.create = function() {
 	
 	// Add the music and visuals
 	this.background = game.add.sprite(-1500, -750, "Background");
-	/*music = game.add.audio('schoolgirl', 1, true);
-	music.play();*/
-	
+	music = game.add.audio('schoolgirl', 1, true);
+	music.play();
+
 	// Create the global player
 	game.global.player = new Player();
 	game.global.player.create(0, 0, this.mainCamera);
@@ -27,9 +27,12 @@ playState.prototype.create = function() {
     game.camera.follow(game.global.player.player);
 	game.camera.scale.setTo(game.global.scale);
 	game.camera.resetFX;
-	
-	
+
+
 	//cursors = game.input.keyboard.createCursorKeys();
+
+	enemy = new Enemy(game, 150, 150);
+	//enemy.body.immovable = true;
 };
 
 // Override update
@@ -41,15 +44,16 @@ playState.prototype.update = function() {
 	
 	
 	// Collisions
+	game.physics.arcade.collide(game.global.player.player, enemy, game.global.player.checkHitBox(enemy));
 	//this.game.physics.arcade.collide(this.game.global.player.player, this.testing);
+
+	/*console.log(game.global.player.player.health);
+	console.log(enemy.health);*/
 
 	// TESTING
 	game.debug.cameraInfo(this.mainCamera, 1000, 50);
 	game.debug.spriteInfo(this.game.global.player.player, 100, 50);
-
 };
-
-
 
 
 

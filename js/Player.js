@@ -39,7 +39,6 @@ Player.prototype.update = function() {
 };
 
 // function to check collision hit box and call attack() or takeDamage() accordingly
-    // will be called from wherever collisions between player and group of enemies is checked
 Player.prototype.checkHitBox = function(target) {
     // reinitialize everything that needs to be updated after actions
     this.player.body.bounce.setTo(0, 0);
@@ -54,10 +53,41 @@ Player.prototype.checkHitBox = function(target) {
     }
 };
 
+// helper function for checking the hitboxs, determines if player is attacking or being attacked
+Player.prototype.isAttacking = function(target) {
+    // update the direction of the player when the collision occured
+    this.getDirection();
+
+    // conditionals to determine if the player successfully attacked
+    if(this.player.x < target.x) { // all the east checks
+        if((this.player.y < target.y) && (this.player.direction == "SE")) {
+            this.player.attacking = true;
+        } else if((this.player.y > target.y) && (this.player.direction == "NE")) {
+            this.player.attacking = true;
+        } else if((this.player.y == target.y) && (this.player.direction == "E")) {
+            this.player.attacking = true;
+        }
+    } else if(this.player.x > target.x) { // all the west checks
+        if((this.player.y < target.y) && (this.player.direction == "SW")) {
+            this.player.attacking = true;
+        } else if((this.player.y > target.y) && (this.player.direction == "NW")) {
+            this.player.attacking = true;
+        } else if((this.player.y == target.y) && (this.player.direction == "W")) {
+            this.player.attacking = true;
+        }
+    } else if(this.player.x == target.x) { // north and south checks
+        if((this.player.y < target.y) && (this.player.direction == "S")) {
+            this.player.attacking = true;
+        } else if((this.player.y > target.y) && (this.player.direction == "N")) {
+            this.player.attacking = true;
+        }
+    }
+};
+
 // function to do processing for attacking an enemy 
 Player.prototype.attack = function(target) {
     // play player attack animation
-    this.player.animations.play("attack");
+    //this.player.animations.play("attack");
     
     // take health from target
     target.damage(this.player.damage);
@@ -69,14 +99,14 @@ Player.prototype.attack = function(target) {
 // function to do processing for being attacked by an enemy
 Player.prototype.takeDamage = function(target) {
     // take health from player by target.damage
-    this.player.health -= target.damage;
+    this.player.health -= target.power;
 
     // knockback player
-    this.player.body.bounce.setTo(0.4, 0.4);
+    //this.player.body.bounce.setTo(0.4, 0.4);
 
     // flash effect on player
-    this.player.animations.stop();
-    this.player.frame = 4; // play frame that has white fill of sprite
+    /*this.player.animations.stop();
+    this.player.frame = 4; // play frame that has white fill of sprite*/
 };
 
 // player movement function to be called in update
@@ -164,37 +194,6 @@ Player.prototype.getDirection = function() {
         this.player.direction = "S";
     } else if(this.player.movingLeft) { // West
         this.player.direction = "W";
-    }
-};
-
-// helper function for checking the hitboxs, determines if player is attacking or being attacked
-Player.prototype.isAttacking = function(target) {
-    // update the direction of the player when the collision occured
-    this.getDirection();
-
-    // conditionals to determine if the player successfully attacked
-    if(this.player.x < target.x) { // all the east checks
-        if((this.player.y < target.y) && (this.player.direction == "SE")) {
-            this.player.attacking = true;
-        } else if((this.player.y > target.y) && (this.player.direction == "NE")) {
-            this.player.attacking = true;
-        } else if((this.player.y == target.y) && (this.player.direction == "E")) {
-            this.player.attacking = true;
-        }
-    } else if(this.player.x > target.x) { // all the west checks
-        if((this.player.y < target.y) && (this.player.direction == "SW")) {
-            this.player.attacking = true;
-        } else if((this.player.y > target.y) && (this.player.direction == "NW")) {
-            this.player.attacking = true;
-        } else if((this.player.y == target.y) && (this.player.direction == "W")) {
-            this.player.attacking = true;
-        }
-    } else if(this.player.x == target.x) { // north and south checks
-        if((this.player.y < target.y) && (this.player.direction == "S")) {
-            this.player.attacking = true;
-        } else if((this.player.y > target.y) && (this.player.direction == "N")) {
-            this.player.attacking = true;
-        }
     }
 };
 

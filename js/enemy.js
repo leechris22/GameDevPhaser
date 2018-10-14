@@ -12,7 +12,8 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
 	//this.animations.add("death", [4,5,6], 10, true);
 	
 	// Set to center
-	this.maxHealth = 1;
+	this.health = 1;
+	this.power = 1;
 	this.anchor.setTo(0.5);
 	
 	// Setup physics
@@ -20,7 +21,6 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
 	let scale = game.global.scale;
 	this.body.setSize(this.width*scale, this.height*scale, -this.width, -this.height);
 	this.body.maxVelocity.setTo(100);
-	this.body.bounce.setTo(0.2);
 	
 	// Setup AI
 	this.fsm = new FSM(this, this.idle);
