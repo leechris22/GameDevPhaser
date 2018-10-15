@@ -3,14 +3,24 @@ let playState = function() {
 	// EMPTY
 };
 
+var map;
+var groundLayer;
+var fenceLayer;
+
 // Override create
 playState.prototype.create = function() {
 	// Set the playing field
 	game.world.setBounds(-1500, -750, 3000, 1500);
 	game.physics.startSystem(Phaser.Physics.ARCADE);
+
+	//	Add map to game
+	map = game.add.tilemap("levelmap");
+	map.addTilesetImage("leveltileset", "leveltiles");
+	groundLayer = map.createLayer("Ground");
+	fenceLayer = map.createLayer("Fences");
 	
 	// Add the music and visuals
-	this.background = game.add.sprite(-1500, -750, "Background");
+	//this.background = game.add.sprite(-1500, -750, "Background");
 	music = game.add.audio('schoolgirl', 1, true);
 	music.play();
 
