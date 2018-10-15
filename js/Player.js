@@ -2,9 +2,9 @@ let Player = function() {};
 
 Player.prototype.preload = function() {};
 
-Player.prototype.create = function(x, y, cam) {
+Player.prototype.create = function(x, y) {
     // construct sprite for the player
-    this.player = game.add.sprite(x, y, "murph");
+    this.player = game.add.sprite(x, y, "Player"), 0;
 
     // initialize all needed player variabels
     this.player.anchor.setTo(0.5, 0.5);
@@ -20,13 +20,14 @@ Player.prototype.create = function(x, y, cam) {
     this.player.movingDown = false;
     this.player.direction = "S";
     this.player.attacking = 0;
-    this.player.camera = cam;
     this.player.timer = 0;
     this.player.clock = 0;
 
     // add in animations for the player
-    this.player.animations.add("left", [0, 1, 2, 3], 10, true);
-    this.player.animations.add("right", [5, 6, 7, 8], 10, true);
+    this.player.animations.add("left", [6], 600, true);
+    this.player.animations.add("right", [7], 600, true);
+    this.player.animations.add("up", [5], 600, true);
+    this.player.animations.add("down", [1,2,3,4], 600, true);
 
     // set up player physics
     this.player.inputEnabled = true;
@@ -36,21 +37,22 @@ Player.prototype.create = function(x, y, cam) {
 Player.prototype.update = function() {
     this.movement();
     game.input.onTap.add(this.shoot, this);
+	game.debug.body(this.player);
 };
 
 // function to check collision hit box and call attack() or takeDamage() accordingly
-Player.prototype.checkHitBox = function(target) {
-    // reinitialize everything that needs to be updated after actions
-    this.player.body.bounce.setTo(0, 0);
-    this.player.attacking = false;
-    
-    // determine if the player is attacking or if they have been attacked
-    this.isAttacking(target);
-    if(this.player.attacking) { // player successfully attacked so call attack
-        this.attack(target);
-    } else { // player was attacked so call takeDamage
-        this.takeDamage(target);
-    }
+Player.prototype.checkHitBox = function(self, target) {
+	// reinitialize everything that needs to be updated after actions
+	this.player.body.bounce.setTo(0, 0);
+	this.player.attacking = false;
+	
+	// determine if the player is attacking or if they have been attacked
+	this.isAttacking(target);
+	if(this.player.attacking) { // player successfully attacked so call attack
+		this.attack(target);
+	} else { // player was attacked so call takeDamage
+		this.takeDamage(target);
+	}
 };
 
 // helper function for checking the hitboxs, determines if player is attacking or being attacked
@@ -161,6 +163,10 @@ Player.prototype.movement = function() {
         this.player.animations.play("right");
     } else if(this.player.movingLeft) {
         this.player.animations.play("left");
+    } else if(this.player.movingUp) {
+        this.player.animations.play("up");
+    } else if(this.player.movingDown) {
+        this.player.animations.play("down");
     } else {
         this.player.animations.stop();
         this.player.frame = 4;

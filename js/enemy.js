@@ -19,7 +19,7 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
 	// Setup physics
     game.physics.arcade.enable(this);
 	let scale = game.global.scale;
-	this.body.setSize(this.width*scale, this.height*scale, -this.width, -this.height);
+	this.body.setSize(this.width*scale, this.height*scale, -this.width/2, -this.height/2);
 	this.body.maxVelocity.setTo(100);
 	
 	// Setup AI

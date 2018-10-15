@@ -3,7 +3,7 @@
 let Spawn = function(game, size) {
 	// Initialize variables
 	this.game = game;
-	this.player = game.global.player.player;
+	this.player = game.global.player;
 	
 	// Set up offscreen spawns
 	this.spawnbox = game.camera.view;
@@ -22,8 +22,9 @@ let Spawn = function(game, size) {
 
 // For each frame
 Spawn.prototype.update = function() {
-	/*this.game.physics.arcade.collide(this.enemies);
-	
+	this.game.physics.arcade.collide(this.enemies);
+	this.game.physics.arcade.collide(this.player.player, this.enemies, this.player.checkHitBox, null, game.global.player);
+
 	// TESTING
 	if (this.game.input.keyboard.isDown(Phaser.KeyCode.D)) {
 		this.spawnOffscreen(0);
@@ -33,7 +34,7 @@ Spawn.prototype.update = function() {
 		console.log(this.enemies.countLiving());
 	}
 
-	this.despawnEnemies();*/
+	this.despawnEnemies();
 }
 
 // Changes the maximum number of enemies
