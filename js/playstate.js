@@ -21,7 +21,7 @@ playState.prototype.create = function() {
 
 	// Create the global player
 	game.global.player = new Player();
-	game.global.player.create(0, 0, this.mainCamera);
+	game.global.player.create(300, 300);	
 	
 	// Initialize player dependent classes
 	this.spawn = new Spawn(game, 20);
@@ -36,7 +36,6 @@ playState.prototype.create = function() {
 
 	//cursors = game.input.keyboard.createCursorKeys();
 
-	enemy = new Enemy(game, 150, 150);
 	//enemy.body.immovable = true;
 };
 
@@ -49,11 +48,9 @@ playState.prototype.update = function() {
 	
 	
 	// Collisions
-	game.physics.arcade.collide(game.global.player.player, enemy, game.global.player.checkHitBox(enemy));
 	//this.game.physics.arcade.collide(this.game.global.player.player, this.testing);
 
-	/*console.log(game.global.player.player.health);
-	console.log(enemy.health);*/
+	console.log(game.global.player.player.health);
 
 	// TESTING
 	game.debug.cameraInfo(this.mainCamera, 1000, 50);
