@@ -19,7 +19,8 @@ preloadState.prototype.preload = function() {
     game.load.image("pickupHealth", "assets/Images/temp_health.png");
 	game.load.audio("schoolgirl", "assets/Music/mainsoundtrack.wav");
 	//Load tilemap
-	//game.load.tilemap(/*name of map*/, /*Assets/filename.json*/, null, Phaser.Tilemap.TILED_JSON);
+	game.load.tilemap("levelmap", "assets/levelmap.json", null, Phaser.Tilemap.TILED_JSON);
+	game.load.image("leveltiles", "assets/images/Tileset.png");
 };
 
 // Override create, start MenuState

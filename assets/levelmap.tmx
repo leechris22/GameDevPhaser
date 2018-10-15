@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="150" height="70" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="1">
- <tileset firstgid="1" source="leveltileset.tsx"/>
+ <tileset firstgid="1" name="leveltileset" tilewidth="64" tileheight="64" tilecount="16" columns="16">
+  <image source="Images/Tileset.png" width="1024" height="64"/>
+ </tileset>
  <layer id="1" name="Ground" width="150" height="70">
   <data encoding="csv">
 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
