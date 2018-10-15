@@ -55,7 +55,9 @@ Enemy.prototype.damage = function(amount) {
 	this.health -= amount;
 	
 	if (this.health <= 0) {
+		console.log("KILL");
 		this.kill();
+		this.destroy();
 		return true;
 	}
 	// this.animations.play("damage");	

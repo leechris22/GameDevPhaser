@@ -9,8 +9,8 @@ Player.prototype.create = function(x, y) {
     // initialize all needed player variabels
     this.player.anchor.setTo(0.5, 0.5);
     this.player.health = 10;
-    this.player.ammo = 5;
-    this.player.speed = 2;
+    this.player.ammo = 10;
+    this.player.speed = 3;
     this.player.damage = 1;
     this.player.x = x;
     this.player.y = y;
@@ -20,8 +20,8 @@ Player.prototype.create = function(x, y) {
     this.player.movingDown = false;
     this.player.direction = "S";
     this.player.attacking = 0;
-    this.player.timer = 0;
-    this.player.clock = 0;
+    this.player.power = 5;
+    offset = 35;
 
     // add in animations for the player
     this.player.animations.add("left", [6], 600, true);
@@ -32,6 +32,8 @@ Player.prototype.create = function(x, y) {
     // set up player physics
     this.player.inputEnabled = true;
     game.physics.arcade.enable(this.player);
+    this.player.body.width = 66;
+    this.player.body.height = 190;
 };
 
 Player.prototype.update = function() {
@@ -44,7 +46,7 @@ Player.prototype.update = function() {
 Player.prototype.checkHitBox = function(self, target) {
 	// reinitialize everything that needs to be updated after actions
 	this.player.body.bounce.setTo(0, 0);
-	this.player.attacking = false;
+    this.player.attacking = false;
 	
 	// determine if the player is attacking or if they have been attacked
 	this.isAttacking(target);
@@ -61,18 +63,18 @@ Player.prototype.isAttacking = function(target) {
     this.getDirection();
 
     // conditionals to determine if the player successfully attacked
-    if(this.player.x < target.x) { // all the east checks
-        if((this.player.y < target.y) && (this.player.direction == "SE")) {
+    /*if(this.player.x < target.x) { // all the east checks
+        if((this.player.y < target.y) && ((this.player.direction == "SE") || (this.player.direction == "S") || (this.player.direction == "E"))) {
             this.player.attacking = true;
-        } else if((this.player.y > target.y) && (this.player.direction == "NE")) {
+        } else if((this.player.y > target.y) && ((this.player.direction == "NE") || (this.player.direction == "N") || (this.player.direction == "E"))) {
             this.player.attacking = true;
         } else if((this.player.y == target.y) && (this.player.direction == "E")) {
             this.player.attacking = true;
         }
-    } else if(this.player.x > target.x) { // all the west checks
-        if((this.player.y < target.y) && (this.player.direction == "SW")) {
+    } else if(this.player.x > target.x - offset) { // all the west checks
+        if((this.player.y < target.y) && ((this.player.direction == "SW") || (this.player.direction == "S") || (this.player.direction == "W"))) {
             this.player.attacking = true;
-        } else if((this.player.y > target.y) && (this.player.direction == "NW")) {
+        } else if((this.player.y > target.y) && ((this.player.direction == "NW") || (this.player.direction == "N") || (this.player.direction == "W"))) {
             this.player.attacking = true;
         } else if((this.player.y == target.y) && (this.player.direction == "W")) {
             this.player.attacking = true;
@@ -83,6 +85,26 @@ Player.prototype.isAttacking = function(target) {
         } else if((this.player.y > target.y) && (this.player.direction == "N")) {
             this.player.attacking = true;
         }
+    }*/
+
+    if(this.player.body.touching.left) {
+        if((this.player.direction == "SW") || (this.player.direction == "W") || (this.player.direction == "NW")) {
+            this.player.attacking = true;
+        }
+    } else if(this.player.body.touching.right) {
+        if((this.player.direction == "SE") || (this.player.direction == "E") || (this.player.direction == "NE")) {
+            this.player.attacking = true;
+        }
+    } else if(this.player.body.touching.up) {
+        if((this.player.direction == "NE") || (this.player.direction == "N") || (this.player.direction == "NW")) {
+            this.player.attacking = true;
+        }
+    } else if(this.player.body.touching.down) {
+        if((this.player.direction == "SE") || (this.player.direction == "S") || (this.player.direction == "SW")) {
+            this.player.attacking = true;
+        }
+    } else {
+        this.player.attacking = false;
     }
 };
 
@@ -92,10 +114,12 @@ Player.prototype.attack = function(target) {
     //this.player.animations.play("attack");
     
     // take health from target
+    //target.body.sprite.alpha = 0.25;
     target.damage(this.player.damage);
 
     // knockback target
-    target.body.bounce.setTo(0.4, 0.4);
+    //target.body.bounce.setTo(1, 1);
+    this.knockback(this.player, target);
 };
 
 // function to do processing for being attacked by an enemy
@@ -104,11 +128,13 @@ Player.prototype.takeDamage = function(target) {
     this.player.health -= target.power;
 
     // knockback player
-    //this.player.body.bounce.setTo(0.4, 0.4);
+    this.knockback(target, this.player);
+    //this.player.body.bounce.setTo(1, 1);
 
     // flash effect on player
-    /*this.player.animations.stop();
-    this.player.frame = 4; // play frame that has white fill of sprite*/
+    //this.player.tint = 0x000000;
+    //this.player.tint = 0xffffff;
+    //this.player.body.sprite.alpha = 0.25;
 
     // check for if player has been killed
     if(this.player.health <= 0) {
@@ -132,29 +158,29 @@ Player.prototype.movement = function() {
     // check for if the left mouse button is being held down
     if(touch.isDown) {
         // movement adjustment for the x coordinate of the player
-        if((touch_x - 4.5) > (this.player.x + 4.5)) { // click is to left of player
+        if((touch_x > this.player.x - offset) && (touch_x < this.player.x + offset)) {
+            this.player.body.velocity.x = 0;
+        } else if(touch_x > this.player.x) { // click is to left of player
             this.player.x += this.player.speed;
             this.player.body.velocity.x = this.speed;
             this.player.movingRight = true;
-        } else if((touch_x - 4.5) < (this.player.x - 4.5)) { // click is to right of player
+        } else if(touch_x < this.player.x) { // click is to right of player
             this.player.x -= this.player.speed;
             this.player.body.velocity.x = -this.speed;
             this.player.movingLeft = true;
-        } else {
-            this.player.body.velocity.x = 0;
         }
 
         // movement adjustment for the y coordinate of the player
-        if((touch_y - 4.5) > (this.player.y + 4.5)) { // click is below player
+        if((touch_y > this.player.y - offset) && (touch_y < this.player.y + offset)) {
+            this.player.body.velocity.y = 0;
+        } else if(touch_y > this.player.y) { // click is below player
             this.player.y += this.player.speed;
             this.player.body.velocity.y = this.speed;
             this.player.movingDown = true;
-        } else if((touch_y - 4.5) < (this.player.y - 4.5)) { // click is above player
+        } else if(touch_y < this.player.y) { // click is above player
             this.player.y -= this.player.speed;
             this.player.body.velocity.y = -this.speed;
             this.player.movingUp = true;
-        } else {
-            this.player.body.velocity.y = 0;
         }
     }
 
@@ -219,7 +245,7 @@ Player.prototype.shootDirection = function(bullet) {
         bullet.angle -= 45;
     } else if(this.player.direction == "SE") {
         bullet.body.velocity.setTo(500, 500); 
-        bullet.angle += 45; 
+        bullet.angle += 45;
     } else if(this.player.direction == "SW") {
         bullet.body.velocity.setTo(-500, 500);
         bullet.angle += 135;
@@ -227,15 +253,15 @@ Player.prototype.shootDirection = function(bullet) {
         bullet.body.velocity.setTo(-500, -500);
         bullet.angle -= 135;
     } else if(this.player.direction == "N") {
-        bullet.body.velocity.setTo(0, -500);
+        bullet.body.velocity.setTo(0, -707);
         bullet.angle -= 90;
     } else if(this.player.direction == "E") {
-        bullet.body.velocity.setTo(500, 0);
+        bullet.body.velocity.setTo(707, 0);
     } else if(this.player.direction == "S") {
-        bullet.body.velocity.setTo(0, 500);
+        bullet.body.velocity.setTo(0, 707);
         bullet.angle += 90;
     } else if(this.player.direction == "W") {
-        bullet.body.velocity.setTo(-500, 0); 
+        bullet.body.velocity.setTo(-707, 0); 
         bullet.angle += 180;
     }
 };
@@ -243,4 +269,42 @@ Player.prototype.shootDirection = function(bullet) {
 // function to kill player when the player runs out of health
 Player.prototype.kill = function() {
     // determine functionality for when the player dies
+    //this.player.destroy();
+};
+
+// function for collision between arrow and enemy
+Player.prototype.arrowHit = function() {
+    // determine functionality for when the arrow collides
+};
+
+// helper function to detemine which direction to knockback
+Player.prototype.knockback = function(attacker, other) {
+    // 
+    if(attacker.body.velocity.x > 0) {
+        if(attacker.body.velocity.y > 0) { // moving southeast
+            other.body.x += 30;
+            other.body.y += 30;
+        } else if(attacker.body.velocity.y < 0) { // moving northeast
+            other.body.x += 30;
+            other.body.y -= 30;
+        } else if(attacker.body.velocity.y == 0) { // moving east
+            other.body.x += 42;
+        }
+    } else if(attacker.body.velocity.x < 0) {
+        if(attacker.body.velocity.y > 0) { // moving southwest
+            other.body.x -= 30;
+            other.body.y += 30;
+        } else if(attacker.body.velocity.y < 0) { // moving northwest
+            other.body.x -= 30;
+            other.body.y -= 30;
+        } else if(attacker.body.velocity.y == 0) { // moving west
+            other.body.x -= 42;
+        }
+    } else if(attacker.body.velocity.x == 0) {
+        if(attacker.body.velocity.y > 0) { // moving south
+            other.body.y += 42;
+        } else if(attacker.body.velocity.y < 0) { // moving north
+            other.body.y -= 42;
+        }
+    }
 };

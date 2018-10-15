@@ -24,6 +24,7 @@ let Spawn = function(game, size) {
 Spawn.prototype.update = function() {
 	this.game.physics.arcade.collide(this.enemies);
 	this.game.physics.arcade.collide(this.player.player, this.enemies, this.player.checkHitBox, null, game.global.player);
+	//this.game.physics.arcade.collide(this.bullet, this.enemies, this.player.arrowHit, null, game.global.player);
 
 	// TESTING
 	if (this.game.input.keyboard.isDown(Phaser.KeyCode.D)) {
