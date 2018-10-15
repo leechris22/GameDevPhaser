@@ -7,8 +7,16 @@ let UI = function(game, maxHealth) {
     
     
     //add health bar
+    game.UI.healthBar = game.add.sprite(0, 0, "healthBar");
     //add arrow count
+    
     //add text score
+    let style = {
+        font: "bold 30pt Arial",
+        fill: "#ffffff",
+        align: "center"
+    };
+    game.UI.textScore = game.add.text(0, 0, "0", style);
 };
 
 UI.prototype = Object.create(Phaser.Sprite.prototype);
@@ -17,6 +25,8 @@ UI.prototype.constructor = UI;
 // For each frame
 UI.prototype.update = function() {
     //check for collision
+    game.UI.healthBar.scale.x = game.UI.currentHealth / game.UI.maxHealth;
+    game.UI.textScore.text = game.UI.playerScore.toString();
 };
 
 UI.prototype.updateScore = function(score) {
