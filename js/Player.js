@@ -4,13 +4,13 @@ Player.prototype.preload = function() {};
 
 Player.prototype.create = function(x, y) {
     // construct sprite for the player
-    this.player = game.add.sprite(x, y, "Player"), 0;
+    this.player = game.add.sprite(x, y, "Player", 0);
 
     // initialize all needed player variabels
     this.player.anchor.setTo(0.5, 0.5);
     this.player.health = 10;
     this.player.ammo = 10;
-    this.player.speed = 3;
+    this.player.speed = 200;
     this.player.damage = 1;
     this.player.x = x;
     this.player.y = y;
@@ -116,10 +116,6 @@ Player.prototype.attack = function(target) {
     // take health from target
     //target.body.sprite.alpha = 0.25;
     target.damage(this.player.damage);
-
-    // knockback target
-    //target.body.bounce.setTo(1, 1);
-    this.knockback(this.player, target);
 };
 
 // function to do processing for being attacked by an enemy
@@ -156,17 +152,15 @@ Player.prototype.movement = function() {
     this.player.movingDown = false;
 
     // check for if the left mouse button is being held down
-    if(touch.isDown) {
+    if (touch.isDown) {
         // movement adjustment for the x coordinate of the player
         if((touch_x > this.player.x - offset) && (touch_x < this.player.x + offset)) {
             this.player.body.velocity.x = 0;
         } else if(touch_x > this.player.x) { // click is to left of player
-            this.player.x += this.player.speed;
-            this.player.body.velocity.x = this.speed;
+            this.player.body.velocity.x = this.player.speed;
             this.player.movingRight = true;
         } else if(touch_x < this.player.x) { // click is to right of player
-            this.player.x -= this.player.speed;
-            this.player.body.velocity.x = -this.speed;
+            this.player.body.velocity.x = -this.player.speed;
             this.player.movingLeft = true;
         }
 
@@ -174,15 +168,15 @@ Player.prototype.movement = function() {
         if((touch_y > this.player.y - offset) && (touch_y < this.player.y + offset)) {
             this.player.body.velocity.y = 0;
         } else if(touch_y > this.player.y) { // click is below player
-            this.player.y += this.player.speed;
-            this.player.body.velocity.y = this.speed;
+            this.player.body.velocity.y = this.player.speed;
             this.player.movingDown = true;
         } else if(touch_y < this.player.y) { // click is above player
-            this.player.y -= this.player.speed;
-            this.player.body.velocity.y = -this.speed;
+            this.player.body.velocity.y = -this.player.speed;
             this.player.movingUp = true;
         }
-    }
+    } else {
+		this.player.body.velocity.setTo(0);
+	}
 
     // decide what animation to play
     if(this.player.movingRight) {

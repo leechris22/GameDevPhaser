@@ -39,7 +39,7 @@ playState.prototype.create = function() {
 	game.camera.resetFX;
 
     // Set up the UI
-	game.global.UI = new UI(game, 10);
+	game.global.UI = new UI(10);
 	//cursors = game.input.keyboard.createCursorKeys();
 
 	//enemy.body.immovable = true;
@@ -51,8 +51,10 @@ playState.prototype.update = function() {
 	this.game.global.player.update();
 	this.spawn.update();
 	this.walls.update();
+	game.global.UI.updateArrowCount(game.global.player.player.ammo);
+    game.global.UI.updateHealth(game.global.player.player.health);
 	this.game.global.UI.update();
-	
+
 	// Collisions
 	//this.game.physics.arcade.collide(this.game.global.player.player, this.testing);
 

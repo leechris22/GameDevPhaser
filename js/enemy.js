@@ -8,19 +8,22 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
     //this.animations.add("right", [1,2], 10, true);
     //this.animations.add("up", [11,12,13], 10, true);
     //this.animations.add("down", [4,5,6], 10, true);
-	//this.animations.add("damage", [4,5,6], 10, true);
-	//this.animations.add("death", [4,5,6], 10, true);
+	this.animations.add("damage", [0,1,0,1,0], 5, false);
+	this.animations.add("death", [0,1,0,1,0], 5, false);
 	
 	// Set variables
-	this.health = 1;
+	this.player = game.global.player.player
+	this.maxHealth = 2;
 	this.power = 1;
 	this.anchor.setTo(0.5);
-	
+	this.active = true;
+
 	// Setup physics
     game.physics.arcade.enable(this);
 	let scale = game.global.scale;
 	this.body.setSize(this.width*scale, this.height*scale, -this.width/2, -this.height/2);
 	this.body.maxVelocity.setTo(100);
+	this.body.bounce.setTo(0.5);
 	
 	// Setup AI
 	this.activeState = this.chase;
@@ -37,30 +40,46 @@ Enemy.prototype.constructor = Enemy;
 
 // For each frame
 Enemy.prototype.update = function() {
-	this.activeState();
+	if (this.active) {
+		this.activeState();
+	}
+	game.debug.body(this);
 }
 
 // When the enemy takes damage, reduce hp by amount
 // At 0 hp, call kill function
 Enemy.prototype.damage = function(amount) {
-	this.health -= amount;
+	// Apply invulnerability frames
+	this.active = false;
+	this.knockback();
+	this.body.velocity.setTo(0);
+	this.body.checkCollision.none = true;
 	
+	// Take damage
+	this.health -= amount;
 	if (this.health <= 0) {
-		console.log("KILL");
 		this.kill();
-		this.destroy();
 		return true;
 	}
-	// this.animations.play("damage");	
+	
+	// Play damaged animation
+	this.animations.play("damage");
+	this.events.onAnimationComplete.addOnce(function() {
+		this.body.checkCollision.none = false;
+		this.active = true;
+	}, this);
 	return false;
 }
 
 // When this dies, play death animation
 Enemy.prototype.kill = function() {
+	// Set death variables
 	this.alive = false;
 	this.body.velocity.setTo(0);
+	
+	// Play death animation
 	this.animations.stop();
-	//this.animations.play('death');
+	this.animations.play("death");
 	this.events.onAnimationComplete.addOnce(function() {
 		this.exists = false;
 		this.visible = false;
@@ -77,6 +96,27 @@ Enemy.prototype.remove = function() {
 	this.exists = false;
 	this.visible = false;
 	return this;
+};
+
+// Resets the enemy properties and position to x,y
+Enemy.prototype.reset = function(x, y) {
+	this.position.setTo(x, y);
+	this.world.setTo(x, y);
+	this.fresh = true;
+	this.exists = true;
+	this.visible = true;
+	this.alive = true;
+	this.health = this.maxHealth;
+	this.active = true;
+	this.body.checkCollision.none = false;
+	this.body.reset(x, y, false, false);
+	return this;
+};
+
+// Push the enemy back when hit
+Enemy.prototype.knockback = function() {
+	this.x += Phaser.Math.sign(this.player.body.velocity.x) * 50;
+	this.y += Phaser.Math.sign(this.player.body.velocity.y) * 50;
 };
 
 // Add point to the path
