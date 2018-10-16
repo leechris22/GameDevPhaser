@@ -14,7 +14,7 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
 	// Set variables
 	this.game = game;
 	this.player = game.global.player.player;
-	this.scale = game.global.scale;
+	this.scaling = game.global.scale;
 	this.maxHealth = 2;
 	this.power = 1;
 	this.anchor.setTo(0.5);
@@ -22,7 +22,7 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
 	
 	// Setup physics
     game.physics.arcade.enable(this);
-	this.body.setSize(this.width*this.scale, this.height*this.scale, -this.width/this.scale, -this.height/this.scale);
+	this.body.setSize(this.width*this.scaling, this.height*this.scaling, -this.width/this.scaling, -this.height/this.scaling);
 	this.body.maxVelocity.setTo(100);
 	this.body.bounce.setTo(0.5);
 	
