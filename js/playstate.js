@@ -39,6 +39,9 @@ playState.prototype.create = function() {
 	game.camera.resetFX;
 
     new UI(10);
+    game.global.bubbles = [];
+    game.global.bubbleSpawner = new BubbleSpawner();
+    //game.global.bubbles.push(new Bubble(5, "hello hello hello hello hello hello"));
 	//cursors = game.input.keyboard.createCursorKeys();
 
 	//enemy.body.immovable = true;
@@ -53,7 +56,8 @@ playState.prototype.update = function() {
     game.global.UI.updateArrowCount(game.global.player.player.ammo);
     game.global.UI.updateHealth(game.global.player.player.health);
     game.global.UI.update();
-	
+    game.global.bubbles.forEach(function(element) { element.update()});
+    game.global.bubbleSpawner.update();
 	// Collisions
 	//this.game.physics.arcade.collide(this.game.global.player.player, this.testing);
 
