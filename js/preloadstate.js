@@ -18,6 +18,9 @@ preloadState.prototype.preload = function() {
     game.load.image("pickupArrow", "assets/Images/temp_arrow.png");
     game.load.image("pickupHealth", "assets/Images/temp_health.png");
 	game.load.audio("schoolgirl", "assets/Music/mainsoundtrack.wav");
+    game.load.image("ui_background", "assets/Images/ui_background.png");
+    game.load.image("healthBar", "assets/Images/temp_healthbar.png");
+
 	//Load tilemap
 	game.load.tilemap("levelmap", "assets/levelmap.json", null, Phaser.Tilemap.TILED_JSON);
 	game.load.image("leveltiles", "assets/images/Tileset.png");
