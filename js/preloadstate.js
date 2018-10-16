@@ -17,6 +17,7 @@ preloadState.prototype.preload = function() {
 	game.load.audio("schoolgirl", "assets/Music/mainsoundtrack.wav");
     game.load.image("ui_background", "assets/Images/ui_background.png");
     game.load.image("healthBar", "assets/Images/temp_healthbar.png");
+    game.load.image("bubble", "assets/Images/temp_bubble.png");
 
 	//Load tilemap
 	game.load.tilemap("levelmap", "assets/levelmap.json", null, Phaser.Tilemap.TILED_JSON);
