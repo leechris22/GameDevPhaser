@@ -30,7 +30,7 @@ playState.prototype.create = function() {
 	
 	// Initialize player dependent classes
 	this.spawn = new Spawn(game, 20);
-	this.walls = new Walls(game, 20);
+	this.others = new Others(game, 20, 5);
 
 	// Set up the camera
 	this.mainCamera = game.camera;
@@ -53,7 +53,7 @@ playState.prototype.update = function() {
 	// Call all sub updates
 	this.game.global.player.update();
 	this.spawn.update();
-	this.walls.update();
+	this.others.update();
 	game.global.UI.updateArrowCount(game.global.player.player.ammo);
     game.global.UI.updateHealth(game.global.player.player.health);
 	this.game.global.UI.update();

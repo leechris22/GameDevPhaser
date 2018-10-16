@@ -268,7 +268,7 @@ Player.prototype.kill = function() {
 
 // function for collision between arrow and enemy
 Player.prototype.arrowHit = function() {
-    // determine functionality for when the arrow collides
+	// determine functionality for when the arrow collides
 };
 
 // helper function to detemine which direction to knockback

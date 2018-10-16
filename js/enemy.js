@@ -12,16 +12,17 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
 	this.animations.add("death", [0,1,0,1,0], 5, false);
 	
 	// Set variables
-	this.player = game.global.player.player
+	this.game = game;
+	this.player = game.global.player.player;
+	this.scale = game.global.scale;
 	this.maxHealth = 2;
 	this.power = 1;
 	this.anchor.setTo(0.5);
 	this.active = true;
-
+	
 	// Setup physics
     game.physics.arcade.enable(this);
-	let scale = game.global.scale;
-	this.body.setSize(this.width*scale, this.height*scale, -this.width/2, -this.height/2);
+	this.body.setSize(this.width*this.scale, this.height*this.scale, -this.width/this.scale, -this.height/this.scale);
 	this.body.maxVelocity.setTo(100);
 	this.body.bounce.setTo(0.5);
 	
