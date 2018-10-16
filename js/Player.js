@@ -8,12 +8,11 @@ Player.prototype.create = function(x, y) {
 
     // initialize all needed player variabels
     this.player.anchor.setTo(0.5, 0.5);
+    this.player.maxHealth = 10;
     this.player.health = 10;
     this.player.ammo = 10;
     this.player.speed = 200;
     this.player.damage = 1;
-    this.player.x = x;
-    this.player.y = y;
     this.player.movingRight = false;
     this.player.movingLeft = false;
     this.player.movingUp = false;
@@ -27,7 +26,7 @@ Player.prototype.create = function(x, y) {
     this.player.animations.add("left", [6], 600, true);
     this.player.animations.add("right", [7], 600, true);
     this.player.animations.add("up", [5], 600, true);
-    this.player.animations.add("down", [1,2,3,4], 600, true);
+    this.player.animations.add("down", [1,2,3,4], 10, true);
 
     // set up player physics
     this.player.inputEnabled = true;

@@ -26,7 +26,7 @@ playState.prototype.create = function() {
 
 	// Create the global player
 	game.global.player = new Player();
-	game.global.player.create(300, 300);	
+	game.global.player.create(0, 0);	
 	
 	// Initialize player dependent classes
 	this.spawn = new Spawn(game, 20);
@@ -59,8 +59,6 @@ playState.prototype.update = function() {
 	this.game.global.UI.update();
     game.global.bubbles.forEach(function(element) { element.update()});
     game.global.bubbleSpawner.update();
-	// Collisions
-	//this.game.physics.arcade.collide(this.game.global.player.player, this.testing);
 
 
 	// TESTING

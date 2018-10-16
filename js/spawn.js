@@ -35,7 +35,7 @@ Spawn.prototype.update = function() {
 		console.log(this.enemies.countLiving());
 	}
 
-	this.despawnEnemies();
+	//this.despawnEnemies();
 }
 
 // Changes the maximum number of enemies
