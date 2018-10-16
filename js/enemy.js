@@ -11,7 +11,7 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
 	//this.animations.add("damage", [4,5,6], 10, true);
 	//this.animations.add("death", [4,5,6], 10, true);
 	
-	// Set to center
+	// Set variables
 	this.health = 1;
 	this.power = 1;
 	this.anchor.setTo(0.5);
@@ -23,22 +23,13 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
 	this.body.maxVelocity.setTo(100);
 	
 	// Setup AI
-	this.fsm = new FSM(this, this.idle);
-	
+	this.activeState = this.chase;
 	this.idleTimer = 0;
-	
 	this.target = this.game.global.player.player;
-
 	this.path = [];
 	this.pathcount = 0;
 	
-	
 	game.add.existing(this);
-	
-	/* EXTRA
-	cursors = game.input.keyboard.createCursorKeys();
-	cursors.left.isDown
-	*/
 };
 
 Enemy.prototype = Object.create(Phaser.Sprite.prototype);
@@ -46,7 +37,7 @@ Enemy.prototype.constructor = Enemy;
 
 // For each frame
 Enemy.prototype.update = function() {
-	this.chase(this);
+	this.activeState();
 }
 
 // When the enemy takes damage, reduce hp by amount
@@ -94,43 +85,40 @@ Enemy.prototype.addPath = function(point) {
 }
 
 // Move around while on idle state
-// ref is a reference to this object, so call as idle(this)
-Enemy.prototype.idle = function(ref) {
-	if (ref.idleTimer <= 0) {
+Enemy.prototype.idle = function() {
+	if (this.idleTimer <= 0) {
 		let direction = new Phaser.Point(Phaser.Math.random(-10, 10), Phaser.Math.random(-10, 10));
-		direction = Phaser.Point.multiply(direction.normalize(), ref.body.maxVelocity)
-		ref.body.velocity.set(direction.x, direction.y);
-		ref.game.time.events.add(1000 * Phaser.Math.random(0.1, 0.4), function() {
-			ref.body.velocity.set(0);
+		direction = Phaser.Point.multiply(direction.normalize(), this.body.maxVelocity)
+		this.body.velocity.set(direction.x, direction.y);
+		this.game.time.events.add(1000 * Phaser.Math.random(0.1, 0.4), function() {
+			this.body.velocity.set(0);
 		}, this);
-		ref.idleTimer = Phaser.Math.random(2, 5) * 1000;
+		this.idleTimer = Phaser.Math.random(2, 5) * 1000;
 	} else {
-		ref.idleTimer -= ref.game.time.elapsedMS;
+		this.idleTimer -= this.game.time.elapsedMS;
 	}
 }
 
 // Chase the player
-// ref is a reference to this object, so call as chase(this)
-Enemy.prototype.chase = function(ref) {
-	if (ref.target.body.center.distance(ref.body.center) > 5) {
-		let direction = Phaser.Point.subtract(ref.target.body.center, ref.body.center);
-		direction = Phaser.Point.multiply(direction.normalize(), ref.body.maxVelocity)
-		ref.body.velocity.set(direction.x, direction.y);
+Enemy.prototype.chase = function() {
+	if (this.target.body.center.distance(this.body.center) > 5) {
+		let direction = Phaser.Point.subtract(this.target.body.center, this.body.center);
+		direction = Phaser.Point.multiply(direction.normalize(), this.body.maxVelocity)
+		this.body.velocity.set(direction.x, direction.y);
 	} else {
-		ref.body.velocity.set(0);
+		this.body.velocity.set(0);
 	}
 }
 
 // Patrol an area
-// ref is a reference to this object, so call as patrol(this)
-Enemy.prototype.patrol = function(ref) {
-	if (ref.pathcount >= ref.path.length) {
-		ref.pathcount = 0;
-	} else if (ref.path[ref.pathcount].distance(new Phaser.Point(ref.centerX, ref.centerY)) > 5) {
-		let direction = Phaser.Point.subtract(ref.path[ref.pathcount], new Phaser.Point(ref.centerX, ref.centerY));
-		direction = Phaser.Point.multiply(direction.normalize(), ref.body.maxVelocity)
-		ref.body.velocity.setTo(direction.x, direction.y);
+Enemy.prototype.patrol = function() {
+	if (this.pathcount >= this.path.length) {
+		this.pathcount = 0;
+	} else if (this.path[this.pathcount].distance(new Phaser.Point(this.centerX, this.centerY)) > 5) {
+		let direction = Phaser.Point.subtract(this.path[this.pathcount], new Phaser.Point(this.centerX, this.centerY));
+		direction = Phaser.Point.multiply(direction.normalize(), this.body.maxVelocity)
+		this.body.velocity.setTo(direction.x, direction.y);
 	} else {
-		ref.pathcount++;
+		this.pathcount++;
 	}
 }

@@ -1,11 +1,6 @@
 // Enemy constructor
 //param is either the amount of health or the number of arrows to pick up
 let Pickup = function(game, x, y, type, param) {
-	
-    
-    
-    
-    
     // Extend sprite object
 	Phaser.Sprite.call(this, game, x, y, "");
 	
