@@ -7,7 +7,7 @@ let menuState = function() {
 menuState.prototype.create = function() {
 	// Add background
 	this.background = game.add.sprite(0, 0, "Titlescreen");	
-	this.music = game.add.audio("StartSoundtrack", 1, true);
+	this.music = game.add.audio("StartSoundtrack", 0.5, true);
 	this.music.play();
 	
 	// Add game title text
@@ -24,6 +24,7 @@ menuState.prototype.create = function() {
 		// Fade to black
 		game.camera.fade('#000000');
 		game.camera.onFadeComplete.add(function() {
+			this.music.stop();
 			game.state.start("PlayState");
 		},this);
 	}, this, 1, 0, 2, 0);
