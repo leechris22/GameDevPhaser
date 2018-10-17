@@ -22,7 +22,7 @@ menuState.prototype.create = function() {
 		// Fade to black
 		game.camera.fade('#000000');
 		game.camera.onFadeComplete.add(function() {
-			game.state.start("PlayState");
+			game.state.start("EndState");
 		},this);
 	}, this, 1, 0, 2, 0);
 	startButton.scale.x = 3;
