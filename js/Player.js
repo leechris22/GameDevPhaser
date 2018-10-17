@@ -21,10 +21,10 @@ Player.prototype.create = function(x, y) {
     this.player.attacking = 0;
     this.player.power = 1;
     this.scale = game.global.scale;
-    this.attackSound = game.add.audio("playermelee", 0.15, false);
-    this.arrowSound = game.add.audio("arrowshot", 0.45, false);
-    this.playerHurt = game.add.audio("playerhurt", 1, false);
-    this.playerDeath = game.add.audio("playerdeath", 0.1, false);
+    this.attackSound = game.add.audio("playermelee", 0.10, false);
+    this.arrowSound = game.add.audio("arrowshot", 0.50, false);
+    this.playerHurt = game.add.audio("playerhurt", 1.60, false);
+    this.playerDeath = game.add.audio("playerdeath", 0.4, false);
     offset = 35;
 
     // add in animations for the player

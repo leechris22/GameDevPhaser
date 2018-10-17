@@ -42,10 +42,10 @@ let BubbleSpawner = function() {
                         'TEAR THE WALLS DOWN.',
                         'THEY CAN’T STOP ME.'
                         ];
-    this.nodistorted = game.add.audio('mainsoundtrack', 1, false);
-    this.softdistorted = game.add.audio('softdistorted', 1, false);
-    this.superdistorted = game.add.audio('superdistorted', 1, false);
-    this.hyperdistorted = game.add.audio('hyperdistorted', 1, false);
+    this.nodistorted = game.add.audio('mainsoundtrack', .75, false);
+    this.softdistorted = game.add.audio('softdistorted', .80, false);
+    this.superdistorted = game.add.audio('superdistorted', .85, false);
+    this.hyperdistorted = game.add.audio('hyperdistorted', .90, false);
     this.audioTime = game.time.now;
     this.nodistorted.play();
     this.soundtrackLength = 63.6;

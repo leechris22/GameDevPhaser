@@ -18,12 +18,6 @@ playState.prototype.create = function() {
 	map.addTilesetImage("leveltileset", "leveltiles");
 	groundLayer = map.createLayer("Ground");
 	fenceLayer = map.createLayer("Fences");
-	
-	// Add the music and visuals
-	//this.background = game.add.sprite(-1500, -750, "Background");
-	//moving to bubbleSpawner.js
-    //music = game.add.audio('schoolgirl', 1, true);
-	//music.play();
 
 	// Create the global player
 	game.global.player = new Player();
@@ -43,11 +37,6 @@ playState.prototype.create = function() {
     game.camera.follow(game.global.player.player);
 	game.camera.scale.setTo(game.global.scale);
 	game.camera.resetFX;
-
-    //game.global.bubbles.push(new Bubble(5, "hello hello hello hello hello hello"));
-	//cursors = game.input.keyboard.createCursorKeys();
-
-	//enemy.body.immovable = true;
 };
 
 // Override update
