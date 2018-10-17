@@ -18,10 +18,27 @@ endState.prototype.create = function() {
 		fill: "#000000",
 		align: "center"
 	};
+
+	let style2 = {
+		font: "bold 44pt Arial",
+		fill: "#000000",
+		align: "center"
+	};
+
+	let style3 = {
+		font: "bold 30pt Arial",
+		fill: "#000000",
+		align: "center"
+	};
+
 	this.text = game.add.text(game.world.centerX, game.world.centerY-300, "GAME OVER", style);
 	this.text.anchor.setTo(0.5, 0.5);
 	this.highscore = game.add.text(game.world.centerX, game.world.centerY-100, "Score: "+this.game.global.UI.score+"\nHighscore: "+this.game.global.highscore, style);
 	this.highscore.anchor.setTo(0.5, 0.5);
+	this.developers = game.add.text(320, 260, this.game.global.developers, style2);
+	this.developers.anchor.setTo(0.5, 0.5);
+	this.credits = game.add.text(1800, 1000, this.game.global.credits, style3);
+	this.credits.anchor.setTo(0.5, 0.5);
 	
 	// Add start button
 	this.menuButton = game.add.button(0, 0, "RestartButton", function(Button, Pointer, isOver) {
