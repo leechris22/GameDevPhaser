@@ -76,8 +76,12 @@ Others.prototype.spawnPickup = function(x, y, key) {
 Others.prototype.getPickup = function(self, target) {
 	if (target.key === "pickupArrow") {
 		self.ammo++;
+		this.game.global.UI.numArrows = self.ammo;
+		this.game.global.UI.updateArrowCount();
 	} else if (target.key === "pickupHealth") {
 		self.health += 5;
+		this.game.global.UI.currentHealth = self.health;
+		this.game.global.UI.updateHealth();
 	}
 	target.kill();
 }

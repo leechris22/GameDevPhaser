@@ -13,7 +13,7 @@ playState.prototype.create = function() {
 	game.world.setBounds(-1500, -750, 3000, 1500);
 	game.physics.startSystem(Phaser.Physics.ARCADE);
 
-	//	Add map to game
+	// Add map to game
 	map = game.add.tilemap("levelmap");
 	map.addTilesetImage("leveltileset", "leveltiles");
 	groundLayer = map.createLayer("Ground");
@@ -28,6 +28,11 @@ playState.prototype.create = function() {
 	// Create the global player
 	game.global.player = new Player();
 	game.global.player.create(0, 0);	
+
+    // Set up the UI
+	game.global.UI = new UI(game, game.global.player.player.maxHealth);
+    game.global.bubbles = [];
+    game.global.bubbleSpawner = new BubbleSpawner();
 	
 	// Initialize player dependent classes
 	this.spawn = new Spawn(game, 20);
@@ -39,10 +44,6 @@ playState.prototype.create = function() {
 	game.camera.scale.setTo(game.global.scale);
 	game.camera.resetFX;
 
-    // Set up the UI
-	game.global.UI = new UI(this.game.global.player.player.maxHealth);
-    game.global.bubbles = [];
-    game.global.bubbleSpawner = new BubbleSpawner();
     //game.global.bubbles.push(new Bubble(5, "hello hello hello hello hello hello"));
 	//cursors = game.input.keyboard.createCursorKeys();
 
@@ -55,9 +56,7 @@ playState.prototype.update = function() {
 	this.game.global.player.update();
 	this.spawn.update();
 	this.others.update();
-	game.global.UI.updateArrowCount(game.global.player.player.ammo);
-    game.global.UI.updateHealth(game.global.player.player.health);
-	game.global.UI.update();
+	this.game.global.UI.update();
     game.global.bubbles.forEach(function(element) { element.update()});
     game.global.bubbleSpawner.update();
 
