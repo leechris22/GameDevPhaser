@@ -20,8 +20,10 @@ Player.prototype.create = function(x, y) {
     this.player.direction = "S";
     this.player.attacking = 0;
     this.player.power = 1;
+    this.scale = game.global.scale;
+    this.attackSound = game.add.audio("playermelee", 1, false);
+    this.arrowSound = game.add.audio("arrowshot", 1, false);
     offset = 35;
-	this.scale = game.global.scale;
 
     // add in animations for the player
     this.player.animations.add("left", [6], 10, true);
@@ -63,9 +65,10 @@ Player.prototype.update = function() {
 // function to check collision hit box and call attack() or takeDamage() accordingly
 Player.prototype.checkHitBox = function(self, target) {
 	// determine if the player is attacking or if they have been attacked
-	if (this.isAttacking(target)) { // player successfully attacked so call attack
-		target.damage(this.player.damage);
-	} else { // player was attacked so call takeDamage
+	if (this.isAttacking(target)) { // player successfully attacked
+        target.damage(this.player.damage);
+        this.attackSound.play();
+	} else { // player was attacked
 		this.takeDamage(target);
 	}
 };
@@ -180,6 +183,7 @@ Player.prototype.shoot = function() {
 		let bullet = this.bullets.getFirstExists(false);
         bullet.power = 2;
         if (this.shootDirection(bullet)) {
+            this.arrowSound.play();
             this.player.ammo--;
         }
     }

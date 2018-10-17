@@ -10,6 +10,8 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
     //this.animations.add("down", [4,5,6], 10, true);
 	this.animations.add("damage", [0,1,0,1,0], 5, false);
 	this.animations.add("death", [0,1,0,1,0], 5, false);
+	this.deathSound = game.add.audio("zombiedeath", 1, false);
+	this.attackedSound = game.add.audio("zombiepain", 1, false);
 	
 	// Set variables
 	this.game = game;
@@ -56,6 +58,7 @@ Enemy.prototype.damage = function(amount) {
 	this.body.velocity.setTo(0);
 		
 	// Take damage
+	this.attackedSound.play();
 	this.health -= amount;
 	if (this.health <= 0) {
 		this.kill();
@@ -78,6 +81,7 @@ Enemy.prototype.kill = function() {
 	this.body.checkCollision.none = true;
 	
 	// Play death animation
+	this.deathSound.play();
 	this.animations.stop();
 	this.animations.play("death");
 	this.events.onAnimationComplete.addOnce(function() {
