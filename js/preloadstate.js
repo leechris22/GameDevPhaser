@@ -27,6 +27,7 @@ preloadState.prototype.preload = function() {
 	game.load.audio("zombiepain", "assets/Music/zombiepain.wav");
 	game.load.audio("playerdeath", "assets/Music/playerdeath.wav");
 	game.load.audio("playerhurt", "assets/Music/playerhurt.wav");
+    game.load.audio("StartSoundtrack", "assets/Music/startsoundtrack.wav");
 
     game.load.image("ui_background", "assets/Images/ui_background.png");
     game.load.image("healthBar", "assets/Images/temp_healthbar.png");
