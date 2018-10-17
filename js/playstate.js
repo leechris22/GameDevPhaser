@@ -16,11 +16,11 @@ playState.prototype.create = function() {
 	map = game.add.tilemap("levelmap");
 	map.addTilesetImage("leveltileset", "leveltiles");
 	groundLayer = map.createLayer("Ground");
-	fenceLayer = map.createLayer("Fences");
+	//fenceLayer = map.createLayer("Fences");
 	groundLayer.scrollFactorX = 0.5;
 	groundLayer.scrollFactorY = 0.5;
-	fenceLayer.scrollFactorX = 0.5;
-	fenceLayer.scrollFactorY = 0.5;
+	//fenceLayer.scrollFactorX = 0.5;
+	//fenceLayer.scrollFactorY = 0.5;
 	
 	// Create the global player
 	game.global.player = new Player();
@@ -41,16 +41,6 @@ playState.prototype.create = function() {
     game.camera.follow(game.global.player.player);
 	game.camera.scale.setTo(game.global.scale);
 	game.camera.resetFX;
-
-	let fences = fenceLayer.getTiles(0, 0, 9600, 4480);
-	console.log(fences.length);
-	for(var i = 0; i < fences.length; i++) {
-		//console.log(fences[i].index);
-		if(fences[i].index > 0) {
-			this.others.spawnWall(fences[i].worldX * game.global.scale, fences[i].worldY * game.global.scale);
-			//console.log([fences[i].worldX, fences[i].worldY, fences[i].x, fences[i].y]);
-		}
-	};
 };
 
 // Override update
