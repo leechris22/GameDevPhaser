@@ -2,7 +2,6 @@
 //param is either the amount of health or the number of arrows to pick up
 let UI = function(game, maxHealth) {
     this.game = game;
-    
 	// add background
     this.background = game.add.sprite(0, 0, "ui_background");
     this.background.fixedToCamera = true;
@@ -40,7 +39,7 @@ UI.prototype.constructor = UI;
 
 // For each frame
 UI.prototype.update = function() {
-    this.healthBar.alpha = (1 + Math.cos(game.time.time / 1000.0)) / 2.0;
+    this.healthBar.alpha = (1 + Math.cos(game.time.time / 1000.0) / 4) / 2.0;
 };
 
 UI.prototype.updateScore = function() {

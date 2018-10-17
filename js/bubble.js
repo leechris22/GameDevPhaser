@@ -1,22 +1,21 @@
 let Bubble = function(timeToFade, textToDisplay, spawnX, spawnY) {
-    
     this.bubblex = spawnX;
     this.bubbley = spawnY;
     this.timeToFade = timeToFade;
     this.totalElapsed = 0;
-    this.bubbleSprite = game.add.sprite(this.bubblex, this.bubbley, "bubble");
+    this.bubbleSprite = game.add.sprite(this.bubblex, this.bubbley, "bubble", game.global.insanityState);
     this.bubbleSprite.fixedToCamera = true;
     this.bubbleSprite.scale.setTo(1 / game.global.scale);
     game.physics.arcade.enable(this.bubbleSprite);
     let style = {
-        font: "bold 27pt Arial",
+        font: "bold 25pt Arial",
         fill: "#ff0000",
         align: "center"
     };
     this.textSprite = game.add.text(this.bubblex, this.bubbley, textToDisplay, style);
     this.textSprite.fixedToCamera = true;
     this.textSprite.wordWrap = true;
-    this.textSprite.wordWrapWidth = 270;
+    this.textSprite.wordWrapWidth = 250;
     this.textSprite.scale.setTo(1 / game.global.scale);
     this.bubbleSprite.alpha = 0;
     this.textSprite.alpha = 0;

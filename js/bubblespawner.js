@@ -1,8 +1,8 @@
 let BubbleSpawner = function() {
     this.totalElapsed = 0;
-    this.timeCutoffs = [5, 25, 45, 60, 75];
-    this.spawnTimeConstant = [1, 1, 1, 1, 1];
-    this.appearTimeConstant = [5, 5, 5, 5, 5];
+    this.timeCutoffs = [5, 25, 45, 60];
+    this.spawnTimeConstant = [1, 1, 1, 1];
+    this.appearTimeConstant = [5, 5, 5, 5];
     //2436, 1125
     this.spawnBoxes = [
                        [[0, 0, 300, 1125], [2100, 0, 2436, 1125]],

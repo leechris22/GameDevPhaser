@@ -8,9 +8,9 @@ Player.prototype.create = function(x, y) {
 
     // initialize all needed player variabels
     this.player.anchor.setTo(0.5, 0.5);
-    this.player.maxHealth = 10;
-    this.player.health = 10;
-    this.player.ammo = 10;
+    this.player.maxHealth = 6;
+    this.player.health = 6;
+    this.player.ammo = 4;
     this.player.speed = 200;
     this.player.damage = 1;
     this.player.movingRight = false;
@@ -107,8 +107,8 @@ Player.prototype.takeDamage = function(target) {
     this.playerHurt.play();
     this.player.health -= target.power;
     this.player.body.checkCollision.none = true;
-    this.player.x -= Phaser.Math.sign(target.body.x - this.player.body.x) * 50;
-    this.player.y -= Phaser.Math.sign(target.body.y - this.player.body.y) * 50;
+    this.player.x -= Phaser.Math.sign(target.body.x - this.player.body.x) * 40;
+    this.player.y -= Phaser.Math.sign(target.body.y - this.player.body.y) * 40;
 	this.player.game.global.UI.currentHealth = this.player.health;
 	this.player.game.global.UI.updateHealth();
 
@@ -263,7 +263,11 @@ Player.prototype.kill = function() {
 	this.player.animations.stop();
 	this.player.animations.play("death");
 	this.player.events.onAnimationComplete.addOnce(function() {
-		this.player.game.state.start("EndState");
+		game.camera.fade('#CD3333');
+		game.camera.onFadeComplete.add(function() {
+			game.sound.stopAll();
+			game.state.start("EndState");
+		},this);
 	}, this);
 	return this;
 };

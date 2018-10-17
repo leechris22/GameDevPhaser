@@ -8,26 +8,26 @@ endState.prototype.create = function() {
 	// Add background
 	game.world.setBounds(0, 0, 2436, 1125);
 	game.camera.scale.setTo(1);
-	this.background = game.add.sprite(0, 0, "Endscreen");
+	//this.background = game.add.sprite(0, 0, "Endscreen");
 	if (this.game.global.highscore < this.game.global.UI.score) {
 		this.game.global.highscore = this.game.global.UI.score;
 	}
 	// Add game title text
 	let style = {
 		font: "bold 60pt Arial",
-		fill: "#000000",
+		fill: "#ffffff",
 		align: "center"
 	};
 
 	let style2 = {
 		font: "bold 44pt Arial",
-		fill: "#000000",
+		fill: "#ffffff",
 		align: "center"
 	};
 
 	let style3 = {
 		font: "bold 30pt Arial",
-		fill: "#000000",
+		fill: "#ffffff",
 		align: "center"
 	};
 

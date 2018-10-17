@@ -6,9 +6,7 @@ let menuState = function() {
 // Override create, start MenuState
 menuState.prototype.create = function() {
 	// Add background
-	this.background = game.add.sprite(0, 0, "Titlescreen");	
-	this.music = game.add.audio("StartSoundtrack", 0.1, true);
-	this.music.play();
+	//this.background = game.add.sprite(0, 0, "Titlescreen");	
 	
 	// Add game title text
 	let style = {
@@ -24,7 +22,6 @@ menuState.prototype.create = function() {
 		// Fade to black
 		game.camera.fade('#000000');
 		game.camera.onFadeComplete.add(function() {
-			this.music.stop();
 			game.state.start("PlayState");
 		},this);
 	}, this, 1, 0, 2, 0);

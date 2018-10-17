@@ -54,8 +54,8 @@ Enemy.prototype.update = function() {
 Enemy.prototype.damage = function(amount) {
 	// Apply invulnerability frames
 	this.active = false;
-	this.x += Phaser.Math.sign(this.body.x - this.player.body.x) * 50;
-    this.y += Phaser.Math.sign(this.body.y - this.player.body.y) * 50;
+	this.x += Phaser.Math.sign(this.body.x - this.player.body.x) * 40;
+    this.y += Phaser.Math.sign(this.body.y - this.player.body.y) * 40;
 	this.body.velocity.setTo(0);
 		
 	// Take damage

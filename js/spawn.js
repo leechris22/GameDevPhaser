@@ -4,13 +4,12 @@ let Spawn = function(game, size) {
 	// Initialize variables
 	this.game = game;
 	this.player = game.global.player;
+	this.spawntime = 3;
+	this.idleTimer = 0;
 	
 	// Set up offscreen spawns
 	this.spawnbox = game.camera.view;
 	this.scale = game.global.scale;
-	
-	// Set up a list of spawns
-	this.spawners = [];
 	
 	// Set up enemies
 	this.enemies = game.add.group();
@@ -31,21 +30,31 @@ Spawn.prototype.update = function() {
 		target.damage(self.power);
 	});
 
-	// TESTING
-	if (this.game.input.keyboard.isDown(Phaser.KeyCode.D)) {
-		this.spawnOffscreen(0);
-	}
-
-	if (this.game.input.keyboard.isDown(Phaser.KeyCode.A)) {
-		console.log(this.enemies.countLiving());
-	}
-	if(this.enemies.total == 0) {
-		for(var i = 0; i < 20; i++) {
-			this.spawnOffscreen(i % 4);
+	// Spawn at random intervals or maintain at least size/5 zombies
+	if (this.idleTimer <= 0 || this.enemies.countLiving() < this.enemies.length / 5) {
+		let side = Phaser.Math.trunc(Phaser.Math.random(0, 4));
+		if (this.game.camera.atLimit.x) {
+			if (this.game.camera.x === 0 && side === 2) {
+				side++;
+			} else if (this.game.camera.x !== 0 && side === 3) {
+				side--;
+			}
 		}
+		if (this.game.camera.atLimit.y) {
+			if (this.game.camera.y === 0 && side === 0) {
+				side++;
+			} else if (this.game.camera.y !== 0 && side === 1) {
+				side--;
+			}
+		}
+		this.spawnOffscreen(side);
+		this.idleTimer = Phaser.Math.random(this.spawntime, this.spawntime+2) * 1000;
+	} else {
+		this.idleTimer -= this.game.time.elapsedMS;
 	}
 	
-	//this.despawnEnemies();
+	
+	this.despawnEnemies();
 }
 
 // Changes the maximum number of enemies
@@ -90,15 +99,6 @@ Spawn.prototype.spawnOffscreen = function(side) {
 		return true;
 	}
 	return false;
-}
-
-// Add a new spawn area as a rectangle
-// x,y are the top left point of the spawn rectangle
-// width and height determine the size
-// Returns the new spawner index
-Spawn.prototype.addSpawner = function(x, y, width, height) {
-	this.spawners.push(new Phaser.Rectangle(x, y, width, height));
-	return this.spawners.length - 1;
 }
 
 // Add an enemy at spawn area i
