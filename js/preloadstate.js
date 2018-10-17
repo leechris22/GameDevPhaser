@@ -8,6 +8,7 @@ preloadState.prototype.preload = function() {
 	// INSERT IMAGES
     game.load.image("Titlescreen", "assets/Images/titlescreen.png");
 	game.load.spritesheet("StartButton", "assets/Images/startbutton.png", 150, 50);
+	//game.load.spritesheet("Restart", "assets/Images/restartbutton.png", 150, 50);
     game.load.image("Background", "assets/Images/background.png");
 	game.load.spritesheet("Player", "assets/Images/schoolgirl.png", 64, 128);
 	game.load.spritesheet("Enemy", "assets/Images/enemy.png", 64, 128);

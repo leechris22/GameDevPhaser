@@ -44,7 +44,6 @@ Enemy.prototype.update = function() {
 	if (this.active) {
 		this.activeState();
 	}
-	game.debug.body(this);
 }
 
 // When the enemy takes damage, reduce hp by amount
@@ -52,7 +51,8 @@ Enemy.prototype.update = function() {
 Enemy.prototype.damage = function(amount) {
 	// Apply invulnerability frames
 	this.active = false;
-	this.knockback();
+	this.x += Phaser.Math.sign(this.player.body.velocity.x) * 50;
+	this.y += Phaser.Math.sign(this.player.body.velocity.y) * 50;
 	this.body.velocity.setTo(0);
 	this.body.checkCollision.none = true;
 	
@@ -112,12 +112,6 @@ Enemy.prototype.reset = function(x, y) {
 	this.body.checkCollision.none = false;
 	this.body.reset(x, y, false, false);
 	return this;
-};
-
-// Push the enemy back when hit
-Enemy.prototype.knockback = function() {
-	this.x += Phaser.Math.sign(this.player.body.velocity.x) * 50;
-	this.y += Phaser.Math.sign(this.player.body.velocity.y) * 50;
 };
 
 // Add point to the path

@@ -8,6 +8,7 @@
 	<script type="text/javascript" src="js/preloadstate.js"></script>
 	<script type="text/javascript" src="js/menustate.js"></script>
 	<script type="text/javascript" src="js/playstate.js"></script>
+	<script type="text/javascript" src="js/endstate.js"></script>
 	<script type="text/javascript" src="js/player.js"></script>
     <script type="text/javascript" src="js/spawn.js"></script>
 	<script type="text/javascript" src="js/enemy.js"></script>
@@ -32,6 +33,7 @@
 	game.state.add("PreloadState", preloadState, true);
 	game.state.add("MenuState", menuState);
 	game.state.add("PlayState", playState);
+	game.state.add("EndState", endState);
 	
 	// Add global variables
 	game.global = {
