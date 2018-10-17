@@ -24,7 +24,7 @@ playState.prototype.create = function() {
 	
 	// Create the global player
 	game.global.player = new Player();
-	game.global.player.create(0, 0);	
+	game.global.player.create(100, 100);	
 
     // Set up the UI
 	game.global.UI = new UI(game, game.global.player.player.maxHealth);

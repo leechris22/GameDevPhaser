@@ -38,7 +38,7 @@ let Others = function(game, wallSize, pickupSize) {
 
 // For each frame
 Others.prototype.update = function() {
-	//this.game.physics.arcade.collide(this.player, this.walls);
+	this.game.physics.arcade.collide(this.player, this.walls);
 	this.game.physics.arcade.overlap(this.player, this.pickups, this.getPickup);
 
 	// TESTING
