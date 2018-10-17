@@ -21,15 +21,17 @@ Player.prototype.create = function(x, y) {
     this.player.attacking = 0;
     this.player.power = 1;
     this.scale = game.global.scale;
-    this.attackSound = game.add.audio("playermelee", 0.2, false);
+    this.attackSound = game.add.audio("playermelee", 0.15, false);
     this.arrowSound = game.add.audio("arrowshot", 0.45, false);
+    this.playerHurt = game.add.audio("playerhurt", 1, false);
+    this.playerDeath = game.add.audio("playerdeath", 0.1, false);
     offset = 35;
 
     // add in animations for the player
-    this.player.animations.add("left", [6], 10, true);
-    this.player.animations.add("right", [7], 10, true);
-    this.player.animations.add("up", [5], 10, true);
-    this.player.animations.add("down", [1,2,3,4], 10, true);
+    this.player.animations.add("left", [19,20,21,22,23,24,25,26,27], 6, true);
+    this.player.animations.add("right", [10,11,12,13,14,15,16,17,18], 6, true);
+    this.player.animations.add("up", [5,6,7,8,9], 5, true);
+    this.player.animations.add("down", [1,2,3,4], 5, true);
 	this.player.animations.add("damage", [0, 6, 7, 5], 5, false);
 	this.player.animations.add("death", [0, 5, 7, 6], 5, false);
 
@@ -102,6 +104,7 @@ Player.prototype.isAttacking = function(target) {
 // function to do processing for being attacked by an enemy
 Player.prototype.takeDamage = function(target) {
     // take health from player by target.damage
+    this.playerHurt.play();
     this.player.health -= target.power;
     this.player.body.checkCollision.none = true;
     this.player.x -= Phaser.Math.sign(target.body.x - this.player.body.x) * 50;
@@ -111,6 +114,7 @@ Player.prototype.takeDamage = function(target) {
 
     // check for if player has been killed
     if (this.player.health <= 0) {
+        this.playerDeath.play();
         this.kill();
     }
 	
