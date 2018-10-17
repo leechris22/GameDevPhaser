@@ -39,11 +39,11 @@ Spawn.prototype.update = function() {
 	if (this.game.input.keyboard.isDown(Phaser.KeyCode.A)) {
 		console.log(this.enemies.countLiving());
 	}
-	/*if(this.enemies.total == 0) {
-		for(var i = 0; i < 4; i++) {
-			this.spawnOffscreen(i);
+	if(this.enemies.total == 0) {
+		for(var i = 0; i < 20; i++) {
+			this.spawnOffscreen(i % 4);
 		}
-	}*/
+	}
 	
 	//this.despawnEnemies();
 }
