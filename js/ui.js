@@ -41,6 +41,7 @@ UI.prototype.update = function() {
     this.healthBar.scale.x = (this.currentHealth) / (this.maxHealth * game.global.scale);
     //this.textScore.text = this.playerScore.toString();
     this.arrowScore.text = "Arrows: " + this.numArrows.toString();
+    this.healthBar.alpha = (1 + Math.cos(game.time.time / 1000.0)) / 2.0;
 };
 
 UI.prototype.updateScore = function(score) {

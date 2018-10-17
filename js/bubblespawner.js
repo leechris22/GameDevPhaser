@@ -49,6 +49,7 @@ let BubbleSpawner = function() {
     this.audioTime = game.time.now;
     this.nodistorted.play();
     this.soundtrackLength = 63.6;
+    game.global.insanityState = this.cutoffIndex;
 }
 
 BubbleSpawner.prototype.getText = function() {
@@ -66,11 +67,11 @@ BubbleSpawner.prototype.getText = function() {
 
 
 BubbleSpawner.prototype.update = function() {
+    game.global.insanityState = this.cutoffIndex;
     if (!game.global.player.player.movingLeft && !game.global.player.player.movingUp &&
         !game.global.player.player.movingDown && !game.global.player.player.movingRight) {
         this.totalElapsed += game.time.elapsedMS / 1000.0;
     }
-    
     
     //this.audioTime += game.time.elapsedMS / 1000.0;
     if (game.time.now - this.audioTime > this.soundtrackLength * 1000)
