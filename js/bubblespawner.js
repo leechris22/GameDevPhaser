@@ -14,7 +14,7 @@ let BubbleSpawner = function() {
     this.timeForNextSpawn = this.timeCutoffs[0];
     this.cutoffIndex = 0;
     this.spawnedBubbles = 0;
-    this.maxBubbles = 250;
+    this.maxBubbles = 150;
     
     this.normalLines = [
                         'Billy…',

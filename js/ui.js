@@ -9,7 +9,7 @@ let UI = function(_maxHealth) {
     this.background.fixedToCamera = true;
     this.background.scale.setTo(1 / game.global.scale);
     //add health bar
-    this.healthBar = game.add.sprite(500, 25, "healthBar");
+    this.healthBar = game.add.sprite(1300, 25, "healthBar");
     this.healthBar.fixedToCamera = true;
     this.healthBar.scale.setTo(1 / game.global.scale);
     //add arrow count
@@ -20,11 +20,11 @@ let UI = function(_maxHealth) {
         fill: "#ffffff",
         align: "center"
     };
-    this.textScore = game.add.text(1050, 25, "0", style);
-    this.textScore.fixedToCamera = true;
-    this.textScore.scale.setTo(1 / game.global.scale);
+    //this.textScore = game.add.text(1050, 25, "0", style);
+    //this.textScore.fixedToCamera = true;
+    //this.textScore.scale.setTo(1 / game.global.scale);
     
-    this.arrowScore = game.add.text(1250, 25, "0", style);
+    this.arrowScore = game.add.text(1050, 25, "Arrows: 0", style);
     this.arrowScore.fixedToCamera = true;
     this.arrowScore.scale.setTo(1 / game.global.scale);
     this.playerScore = 0;
@@ -39,8 +39,8 @@ UI.prototype.constructor = UI;
 UI.prototype.update = function() {
     //check for collision
     this.healthBar.scale.x = (this.currentHealth) / (this.maxHealth * game.global.scale);
-    this.textScore.text = this.playerScore.toString();
-    this.arrowScore.text = this.numArrows.toString();
+    //this.textScore.text = this.playerScore.toString();
+    this.arrowScore.text = "Arrows: " + this.numArrows.toString();
 };
 
 UI.prototype.updateScore = function(score) {
