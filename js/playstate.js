@@ -16,7 +16,7 @@ playState.prototype.create = function() {
 	map = game.add.tilemap("levelmap");
 	map.addTilesetImage("leveltileset", "leveltiles");
 	groundLayer = map.createLayer("Ground");
-	fenceLayer = map.createLayer("Fences");
+	//fenceLayer = map.createLayer("Fences");
 	groundLayer.scrollFactorX = 0.5;
 	groundLayer.scrollFactorY = 0.5;
 	fenceLayer.scrollFactorX = 0.5;
