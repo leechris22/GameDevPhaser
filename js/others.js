@@ -32,8 +32,6 @@ let Others = function(game, wallSize, pickupSize) {
 	this.pickups.setAll("body.height", pickup.height*this.scale);
 	this.pickups.setAll("body.offset.x", -pickup.width/this.scale);
 	this.pickups.setAll("body.offset.y", -pickup.height/this.scale);
-
-	this.counter = 0;
 };
 
 // For each frame
@@ -48,18 +46,17 @@ Others.prototype.update = function() {
 	}
 
 	if (this.game.input.keyboard.isDown(Phaser.KeyCode.A)) {
-		console.log(this.walls.countLiving());
+		
 	}*/
 }
 
 // Add a wall at cooredinate x, y
 // Return true if wall successfully added
 Others.prototype.spawnWall = function(x, y) {
-	let wall = this.walls.getAt(this.counter);
+	let wall = this.walls.getFirstExists(false);
 	if (wall) {
 		wall.fixedToCamera = false;
 		wall.reset(x, y);
-		this.counter++;
 		return true;
 	}
 	return false;
