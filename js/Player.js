@@ -28,7 +28,7 @@ Player.prototype.create = function(x, y) {
     this.player.animations.add("right", [7], 10, true);
     this.player.animations.add("up", [5], 10, true);
     this.player.animations.add("down", [1,2,3,4], 10, true);
-	this.player.animations.add("damage", [0,1,0,1,0], 5, false);
+	this.player.animations.add("damage", [0, 6, 7, 5], 5, false);
 	this.player.animations.add("death", [0,1,0,1,0], 5, false);
 
     // set up player physics
@@ -47,8 +47,6 @@ Player.prototype.create = function(x, y) {
 	this.bullets.setAll("anchor.y", 0.5);
 	this.bullets.setAll("body.width", 20);
 	this.bullets.setAll("body.height", 20);
-
-
 };
 
 Player.prototype.update = function() {
@@ -170,6 +168,7 @@ Player.prototype.movement = function() {
         this.player.frame = 4;
 		this.player.direction = "S";
     }
+    this.player.body.checkCollision.none = false;
 };
 
 // function to use arrow powerup if the player has available arrows
@@ -177,9 +176,10 @@ Player.prototype.shoot = function() {
     if (this.player.ammo > 0) {
         // shoot arrow and lose an arrow
 		let bullet = this.bullets.getFirstExists(false);
-		bullet.power = 2;
-        this.shootDirection(bullet);
-		this.player.ammo--;
+        bullet.power = 2;
+        if (this.shootDirection(bullet)) {
+            this.player.ammo--;
+        }
     }
 };
 
@@ -210,45 +210,33 @@ Player.prototype.shootDirection = function(bullet) {
     this.getDirection();
 
     // determine the velocity of the bullet according to the direction
-	bullet.reset(this.player.x, this.player.y);
-    if(this.player.direction == "NE") {
-        bullet.body.velocity.setTo(500, -500);
-        bullet.angle -= 45;
-		bullet.body.offset.y = -75;
-		bullet.body.offset.x = 120;
-	} else if(this.player.direction == "SE") {
-        bullet.body.velocity.setTo(500, 500); 
-        bullet.angle += 45;
-		bullet.body.offset.y = 80;
-		bullet.body.offset.x = 120;
-    } else if(this.player.direction == "SW") {
-        bullet.body.velocity.setTo(-500, 500);
-        bullet.angle += 135;
-		bullet.body.offset.y = 75;
-		bullet.body.offset.x = -30;
-    } else if(this.player.direction == "NW") {
-        bullet.body.velocity.setTo(-500, -500);
-        bullet.angle -= 135;
-		bullet.body.offset.y = -75;
-		bullet.body.offset.x = -30;
-    } else if(this.player.direction == "N") {
+    if(this.player.direction == "N") {
+        bullet.reset(this.player.x, this.player.y);
         bullet.body.velocity.setTo(0, -707);
         bullet.angle -= 90;
 		bullet.body.offset.y = -115;
-		bullet.body.offset.x = 45;
+        bullet.body.offset.x = 45;
+        return true;
     } else if(this.player.direction == "E") {
+        bullet.reset(this.player.x, this.player.y);
         bullet.body.velocity.setTo(707, 0);
-		bullet.body.offset.x = 160;
+        bullet.body.offset.x = 160;
+        return true;
     } else if(this.player.direction == "S") {
+        bullet.reset(this.player.x, this.player.y);
         bullet.body.velocity.setTo(0, 707);
         bullet.angle = 90;
 		bullet.body.offset.y = 115;
-		bullet.body.offset.x = 45;
+        bullet.body.offset.x = 45;
+        return true;
     } else if(this.player.direction == "W") {
+        bullet.reset(this.player.x, this.player.y);
         bullet.body.velocity.setTo(-707, 0); 
         bullet.angle += 180;
-		bullet.body.offset.x = -70;
+        bullet.body.offset.x = -70;
+        return true;
     }
+    return false;
 };
 
 // function to kill player when the player runs out of health

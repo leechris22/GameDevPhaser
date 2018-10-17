@@ -21,8 +21,9 @@ playState.prototype.create = function() {
 	
 	// Add the music and visuals
 	//this.background = game.add.sprite(-1500, -750, "Background");
-	music = game.add.audio('schoolgirl', 1, true);
-	music.play();
+	//moving to bubbleSpawner.js
+    //music = game.add.audio('schoolgirl', 1, true);
+	//music.play();
 
 	// Create the global player
 	game.global.player = new Player();
@@ -54,11 +55,11 @@ playState.prototype.update = function() {
 	this.game.global.player.update();
 	this.spawn.update();
 	this.others.update();
-	//game.global.UI.updateArrowCount(game.global.player.player.ammo);
-    //game.global.UI.updateHealth(game.global.player.player.health);
-	//this.game.global.UI.update();
-    //game.global.bubbles.forEach(function(element) { element.update()});
-    //game.global.bubbleSpawner.update();
+	game.global.UI.updateArrowCount(game.global.player.player.ammo);
+    game.global.UI.updateHealth(game.global.player.player.health);
+	game.global.UI.update();
+    game.global.bubbles.forEach(function(element) { element.update()});
+    game.global.bubbleSpawner.update();
 
 
 	// TESTING

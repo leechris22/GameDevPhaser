@@ -17,7 +17,11 @@ preloadState.prototype.preload = function() {
 	game.load.image("arrow", "assets/Images/arrow.png");
     game.load.image("pickupArrow", "assets/Images/temp_arrow.png");
     game.load.image("pickupHealth", "assets/Images/temp_health.png");
-	game.load.audio("schoolgirl", "assets/Music/mainsoundtrack.wav");
+	game.load.audio("mainsoundtrack", "assets/Music/mainsoundtrack.wav");
+    game.load.audio("softdistorted", "assets/Music/softdistorted.wav");
+    game.load.audio("superdistorted", "assets/Music/superdistorted.wav");
+    game.load.audio("hyperdistorted", "assets/Music/hyperdistorted.wav");
+
     game.load.image("ui_background", "assets/Images/ui_background.png");
     game.load.image("healthBar", "assets/Images/temp_healthbar.png");
     game.load.image("bubble", "assets/Images/temp_bubble.png");
