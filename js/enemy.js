@@ -10,8 +10,8 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
     //this.animations.add("down", [4,5,6], 10, true);
 	this.animations.add("damage", [0,1,0,1,0], 5, false);
 	this.animations.add("death", [0,1,0,1,0], 5, false);
-	this.deathSound = game.add.audio("zombiedeath", 1, false);
-	this.attackedSound = game.add.audio("zombiepain", 1, false);
+	this.deathSound = game.add.audio("zombiedeath", 0.9, false);
+	this.attackedSound = game.add.audio("zombiepain", 0.2, false);
 	
 	// Set variables
 	this.game = game;

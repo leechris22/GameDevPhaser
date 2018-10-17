@@ -21,8 +21,8 @@ Player.prototype.create = function(x, y) {
     this.player.attacking = 0;
     this.player.power = 1;
     this.scale = game.global.scale;
-    this.attackSound = game.add.audio("playermelee", 1, false);
-    this.arrowSound = game.add.audio("arrowshot", 1, false);
+    this.attackSound = game.add.audio("playermelee", 0.2, false);
+    this.arrowSound = game.add.audio("arrowshot", 0.45, false);
     offset = 35;
 
     // add in animations for the player
