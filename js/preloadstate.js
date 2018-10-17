@@ -21,6 +21,7 @@ preloadState.prototype.preload = function() {
     game.load.audio("softdistorted", "assets/Music/softdistorted.wav");
     game.load.audio("superdistorted", "assets/Music/superdistorted.wav");
     game.load.audio("hyperdistorted", "assets/Music/hyperdistorted.wav");
+    game.load.audio("StartSoundtrack", "assets/Music/startsoundtrack.wav");
 
     game.load.image("ui_background", "assets/Images/ui_background.png");
     game.load.image("healthBar", "assets/Images/temp_healthbar.png");
