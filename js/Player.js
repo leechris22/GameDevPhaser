@@ -176,7 +176,7 @@ Player.prototype.movement = function() {
         this.player.animations.play("down");
     } else if (this.player.animations.currentAnim.name !== "damage") {
         this.player.animations.stop();
-        this.player.frame = 4;
+        this.player.frame = 0;
 		this.player.direction = "S";
     }
     this.player.body.checkCollision.none = false;

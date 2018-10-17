@@ -12,7 +12,7 @@ preloadState.prototype.preload = function() {
 	game.load.spritesheet("RestartButton", "assets/Images/restartbutton.png", 150, 50);
     game.load.image("Background", "assets/Images/background.png");
 	game.load.spritesheet("Player", "assets/Images/schoolgirl.png", 64, 128);
-	game.load.spritesheet("Enemy", "assets/Images/enemy.png", 64, 128);
+	game.load.spritesheet("Enemy", "assets/Images/zombie.png", 64, 128);
     game.load.image("Wall", "assets/Images/wall.png");
 	game.load.image("arrow", "assets/Images/arrow.png");
     game.load.image("pickupArrow", "assets/Images/temp_arrow.png");

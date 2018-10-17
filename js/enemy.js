@@ -4,10 +4,10 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
 	Phaser.Sprite.call(this, game, x, y, key, frame);
 	
 	// Set up animations
-	//this.animations.add("left", [8,9], 10, true);
-    //this.animations.add("right", [1,2], 10, true);
-    //this.animations.add("up", [11,12,13], 10, true);
-    //this.animations.add("down", [4,5,6], 10, true);
+	this.animations.add("left", [19,20,21,22,23,24,25,26,27], 6, true);
+    this.animations.add("right", [10,11,12,13,14,15,16,17,18], 6, true);
+    this.animations.add("up", [5,6,7,8,9], 5, true);
+    this.animations.add("down", [1,2,3,4], 5, true);
 	this.animations.add("damage", [0,1,0,1,0], 5, false);
 	this.animations.add("death", [0,1,0,1,0], 5, false);
 	this.deathSound = game.add.audio("zombiedeath", 0.4, false);
@@ -45,6 +45,7 @@ Enemy.prototype.constructor = Enemy;
 Enemy.prototype.update = function() {
 	if (this.active) {
 		this.activeState();
+		this.facingDirection();
 	}
 }
 
@@ -160,5 +161,17 @@ Enemy.prototype.patrol = function() {
 		this.body.velocity.setTo(direction.x, direction.y);
 	} else {
 		this.pathcount++;
+	}
+}
+
+Enemy.prototype.facingDirection = function() {
+	if (this.body.velocity.x > 0) {
+		this.animations.play("right");
+	} else if (this.body.velocity.x < 0) {
+		this.animations.play("left");
+	} else if (this.body.velocity.y > 0) {
+		this.animations.play("down");
+	} else if (this.body.velocity.y < 0) {
+		this.animations.play("up");
 	}
 }
