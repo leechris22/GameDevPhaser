@@ -1,10 +1,9 @@
 // Enemy constructor
 //param is either the amount of health or the number of arrows to pick up
-let UI = function(_maxHealth) {
-    game.global.UI = this;
-    this.currentHealth = 10;
-    this.maxHealth = _maxHealth;
+let UI = function(game, maxHealth) {
+    this.game = game;
     
+	// add background
     this.background = game.add.sprite(0, 0, "ui_background");
     this.background.fixedToCamera = true;
     this.background.scale.setTo(1 / game.global.scale);
@@ -20,16 +19,20 @@ let UI = function(_maxHealth) {
         fill: "#ffffff",
         align: "center"
     };
-    //this.textScore = game.add.text(1050, 25, "0", style);
-    //this.textScore.fixedToCamera = true;
-    //this.textScore.scale.setTo(1 / game.global.scale);
+    this.textScore = game.add.text(200, 25, "", style);
+    this.textScore.fixedToCamera = true;
+    this.textScore.scale.setTo(1 / game.global.scale);
     
-    this.arrowScore = game.add.text(1050, 25, "Arrows: 0", style);
+    this.arrowScore = game.add.text(1050, 25, "", style);
     this.arrowScore.fixedToCamera = true;
     this.arrowScore.scale.setTo(1 / game.global.scale);
-    this.playerScore = 0;
-    this.numArrows = 0;
-    this.currentHealth = 0;
+    this.score = 0;
+    this.numArrows = this.game.global.player.player.ammo;
+    this.currentHealth = this.game.global.player.player.health;
+	this.maxHealth = this.game.global.player.player.maxHealth;
+	this.updateScore();
+	this.updateArrowCount();
+	this.updateHealth();
 };
 
 UI.prototype = Object.create(Phaser.Sprite.prototype);
@@ -37,20 +40,17 @@ UI.prototype.constructor = UI;
 
 // For each frame
 UI.prototype.update = function() {
-    //check for collision
-    this.healthBar.scale.x = (this.currentHealth) / (this.maxHealth * game.global.scale);
-    //this.textScore.text = this.playerScore.toString();
+    this.healthBar.alpha = (1 + Math.cos(game.time.time / 1000.0)) / 2.0;
+};
+
+UI.prototype.updateScore = function() {
+    this.textScore.text = "Score: " + this.score.toString();
+};
+
+UI.prototype.updateArrowCount = function() {
     this.arrowScore.text = "Arrows: " + this.numArrows.toString();
 };
 
-UI.prototype.updateScore = function(score) {
-    this.playerScore = score;
-};
-
-UI.prototype.updateArrowCount = function(count) {
-    this.numArrows = count;
-};
-
-UI.prototype.updateHealth = function(health) {
-    this.currentHealth = health;
+UI.prototype.updateHealth = function() {
+    this.healthBar.scale.x = (this.currentHealth) / (this.maxHealth * game.global.scale);
 }

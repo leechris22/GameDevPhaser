@@ -14,19 +14,19 @@ menuState.prototype.create = function() {
 		fill: "#ffffff",
 		align: "center"
 	};
-	let text = game.add.text(game.world.centerX, game.world.centerY-100, game.global.title, style);
-	text.anchor.setTo(0.5, 0.5);
+	this.text = game.add.text(game.world.centerX, game.world.centerY-100, game.global.title, style);
+	this.text.anchor.setTo(0.5, 0.5);
 	
 	// Add start button
-	let startButton = game.add.button(0, 0, "StartButton", function(Button, Pointer, isOver) {
+	this.startButton = game.add.button(0, 0, "StartButton", function(Button, Pointer, isOver) {
 		// Fade to black
 		game.camera.fade('#000000');
 		game.camera.onFadeComplete.add(function() {
 			game.state.start("PlayState");
 		},this);
 	}, this, 1, 0, 2, 0);
-	startButton.scale.x = 3;
-	startButton.scale.y = 3;
-	startButton.centerX = game.world.centerX;
-	startButton.centerY = game.world.centerY + 250;
+	this.startButton.scale.x = 3;
+	this.startButton.scale.y = 3;
+	this.startButton.centerX = game.world.centerX;
+	this.startButton.centerY = game.world.centerY + 250;
 };

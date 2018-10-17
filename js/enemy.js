@@ -76,6 +76,8 @@ Enemy.prototype.damage = function(amount) {
 // When this dies, play death animation
 Enemy.prototype.kill = function() {
 	// Set death variables
+	this.game.global.UI.score += 200;
+	this.game.global.UI.updateScore();
 	this.alive = false;
 	this.body.velocity.setTo(0);
 	this.body.checkCollision.none = true;

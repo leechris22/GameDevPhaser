@@ -106,6 +106,8 @@ Player.prototype.takeDamage = function(target) {
     this.player.body.checkCollision.none = true;
     this.player.x -= Phaser.Math.sign(target.body.x - this.player.body.x) * 50;
     this.player.y -= Phaser.Math.sign(target.body.y - this.player.body.y) * 50;
+	this.player.game.global.UI.currentHealth = this.player.health;
+	this.player.game.global.UI.updateHealth();
 
     // check for if player has been killed
     if (this.player.health <= 0) {
@@ -185,6 +187,8 @@ Player.prototype.shoot = function() {
         if (this.shootDirection(bullet)) {
             this.arrowSound.play();
             this.player.ammo--;
+			this.player.game.global.UI.numArrows = this.player.ammo;
+			this.player.game.global.UI.updateArrowCount();
         }
     }
 };
