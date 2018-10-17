@@ -20,7 +20,11 @@ preloadState.prototype.preload = function() {
 	game.load.audio("mainsoundtrack", "assets/Music/mainsoundtrack.wav");
     game.load.audio("softdistorted", "assets/Music/softdistorted.wav");
     game.load.audio("superdistorted", "assets/Music/superdistorted.wav");
-    game.load.audio("hyperdistorted", "assets/Music/hyperdistorted.wav");
+	game.load.audio("hyperdistorted", "assets/Music/hyperdistorted.wav");
+	game.load.audio("arrowshot", "assets/Music/arrowshot.wav");
+	game.load.audio("playermelee", "assets/Music/playermelee.wav");
+	game.load.audio("zombiedeath", "assets/Music/zombiedeath.wav");
+	game.load.audio("zombiepain", "assets/Music/zombiepain.wav");
     game.load.audio("StartSoundtrack", "assets/Music/startsoundtrack.wav");
 
     game.load.image("ui_background", "assets/Images/ui_background.png");
