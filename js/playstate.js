@@ -12,10 +12,6 @@ playState.prototype.create = function() {
 	game.world.setBounds(0, 0, 9600, 4480);
 	game.physics.startSystem(Phaser.Physics.ARCADE);
 
-	// Create the global player
-	game.global.player = new Player();
-	game.global.player.create(100, 100);	
-
 	// Add map to game
 	map = game.add.tilemap("levelmap");
 	map.addTilesetImage("leveltileset", "leveltiles");
@@ -26,6 +22,10 @@ playState.prototype.create = function() {
 	fenceLayer.scrollFactorX = 0.5;
 	fenceLayer.scrollFactorY = 0.5;
 		
+	// Create the global player
+	game.global.player = new Player();
+	game.global.player.create(100, 100);	
+
 	// Initialize player dependent classes
 	this.spawn = new Spawn(game, 20);
 	this.others = new Others(game, 5000, 5);
@@ -35,9 +35,9 @@ playState.prototype.create = function() {
     game.camera.follow(game.global.player.player);
 	game.camera.scale.setTo(game.global.scale);
 	game.camera.resetFX;
-
+	
 	let fences = fenceLayer.getTiles(0, 0, 9600, 4480);
-	console.log(fences)
+	
 	for (let i = 0; i < fences.length; i++) {
 		if (fences[i].index != -1) {
 			this.others.spawnWall(fences[i].worldX, fences[i].worldY);
