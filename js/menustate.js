@@ -12,7 +12,7 @@ menuState.prototype.create = function() {
 	
 	// Add game title text
 	let style = {
-		font: "bold 60pt Arial",
+		font: "bold 160pt Arial",
 		fill: "#ffffff",
 		align: "center"
 	};
