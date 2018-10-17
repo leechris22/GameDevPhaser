@@ -100,9 +100,9 @@ Player.prototype.isAttacking = function(target) {
 Player.prototype.takeDamage = function(target) {
     // take health from player by target.damage
     this.player.health -= target.power;
-	this.player.body.checkCollision.none = true;
-	this.player.x += Phaser.Math.sign(target.body.velocity.x) * 50;
-	this.player.y += Phaser.Math.sign(target.body.velocity.y) * 50;
+    this.player.body.checkCollision.none = true;
+    this.player.x -= Phaser.Math.sign(target.body.x - this.player.body.x) * 50;
+    this.player.y -= Phaser.Math.sign(target.body.y - this.player.body.y) * 50;
 
     // check for if player has been killed
     if (this.player.health <= 0) {
