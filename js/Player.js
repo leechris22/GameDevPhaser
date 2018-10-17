@@ -24,9 +24,9 @@ Player.prototype.create = function(x, y) {
 	this.scale = game.global.scale;
 
     // add in animations for the player
-    this.player.animations.add("left", [6], 600, true);
-    this.player.animations.add("right", [7], 600, true);
-    this.player.animations.add("up", [5], 600, true);
+    this.player.animations.add("left", [6], 10, true);
+    this.player.animations.add("right", [7], 10, true);
+    this.player.animations.add("up", [5], 10, true);
     this.player.animations.add("down", [1,2,3,4], 10, true);
 	this.player.animations.add("damage", [0,1,0,1,0], 5, false);
 	this.player.animations.add("death", [0,1,0,1,0], 5, false);
@@ -45,8 +45,8 @@ Player.prototype.create = function(x, y) {
 	this.bullets.setAll("inputEnabled", true);
 	this.bullets.setAll("anchor.x", 0.5);
 	this.bullets.setAll("anchor.y", 0.5);
-	this.bullets.setAll("body.width", 10*this.scale);
-	this.bullets.setAll("body.height", 10*this.scale);
+	this.bullets.setAll("body.width", 20);
+	this.bullets.setAll("body.height", 20);
 
 
 };
@@ -100,7 +100,7 @@ Player.prototype.isAttacking = function(target) {
 Player.prototype.takeDamage = function(target) {
     // take health from player by target.damage
     this.player.health -= target.power;
-	this.body.checkCollision.none = true;
+	this.player.body.checkCollision.none = true;
 	this.player.x += Phaser.Math.sign(target.body.velocity.x) * 50;
 	this.player.y += Phaser.Math.sign(target.body.velocity.y) * 50;
 
@@ -110,9 +110,9 @@ Player.prototype.takeDamage = function(target) {
     }
 	
 	// Play damaged animation
-	this.animations.play("damage");
-	this.events.onAnimationComplete.addOnce(function() {
-		this.body.checkCollision.none = false;
+	this.player.animations.play("damage");
+	this.player.events.onAnimationComplete.addOnce(function() {
+		this.player.body.checkCollision.none = false;
 	}, this);
 };
 
@@ -165,7 +165,7 @@ Player.prototype.movement = function() {
         this.player.animations.play("up");
     } else if(this.player.movingDown) {
         this.player.animations.play("down");
-    } else {
+    } else if (this.player.animations.currentAnim.name !== "damage") {
         this.player.animations.stop();
         this.player.frame = 4;
 		this.player.direction = "S";
@@ -254,14 +254,14 @@ Player.prototype.shootDirection = function(bullet) {
 // function to kill player when the player runs out of health
 Player.prototype.kill = function() {
 	// Set death variables
-	this.alive = false;
-	this.body.velocity.setTo(0);
+	this.player.alive = false;
+	this.player.body.velocity.setTo(0);
 	
 	// Play death animation
-	this.animations.stop();
-	this.animations.play("death");
-	this.events.onAnimationComplete.addOnce(function() {
-		game.state.start("EndState");
+	this.player.animations.stop();
+	this.player.animations.play("death");
+	this.player.events.onAnimationComplete.addOnce(function() {
+		this.game.state.start("EndState");
 	}, this);
 	return this;
 };
