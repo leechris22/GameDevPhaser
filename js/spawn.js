@@ -18,13 +18,18 @@ let Spawn = function(game, size) {
 	this.enemies.enableBody = true;
 	this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
 	this.enemies.createMultiple(size, "Enemy");
+	
+	// Set up bullets
+	this.bullets = this.player.bullets;
 };
 
 // For each frame
 Spawn.prototype.update = function() {
 	this.game.physics.arcade.collide(this.enemies);
 	this.game.physics.arcade.collide(this.player.player, this.enemies, this.player.checkHitBox, null, game.global.player);
-	//this.game.physics.arcade.collide(this.bullet, this.enemies, this.player.arrowHit, null, game.global.player);
+	this.game.physics.arcade.overlap(this.bullets, this.enemies, function(self, target) {
+		target.damage(self.power);
+	});
 
 	// TESTING
 	if (this.game.input.keyboard.isDown(Phaser.KeyCode.D)) {
