@@ -41,6 +41,8 @@ UI.prototype.constructor = UI;
 // For each frame
 UI.prototype.update = function() {
     this.healthBar.alpha = (1 + Math.cos(game.time.time / 1000.0)) / 2.0;
+};
+
 UI.prototype.updateScore = function() {
     this.textScore.text = "Score: " + this.score.toString();
 };
