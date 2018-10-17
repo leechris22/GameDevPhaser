@@ -35,6 +35,8 @@ Bubble.prototype.update = function() {
     }
     this.bubbleSprite.alpha = newAlpha;
     this.textSprite.alpha = newAlpha;
+    this.moveUp();
+    this.moveUp();
     /*
     let randAngle = 6.28 * Math.random();
     //this.bubbleSprite.x = this.bubblex + 100 * Math.cos(randAngle);
