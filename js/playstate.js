@@ -21,8 +21,9 @@ playState.prototype.create = function() {
 	
 	// Add the music and visuals
 	//this.background = game.add.sprite(-1500, -750, "Background");
-	music = game.add.audio('schoolgirl', 1, true);
-	music.play();
+	//moving to bubbleSpawner.js
+    //music = game.add.audio('schoolgirl', 1, true);
+	//music.play();
 
 	// Create the global player
 	game.global.player = new Player();
