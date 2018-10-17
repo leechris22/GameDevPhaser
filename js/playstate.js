@@ -57,11 +57,16 @@ playState.prototype.create = function() {
     downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
     leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
     rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+    debugKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
 };
 
 // Override update
 playState.prototype.update = function() {
 	// Call all sub updates
+    if (debugKey.isDown)
+    {
+        game.global.debug = !game.global.debug;
+    }
 	this.game.global.player.update();
 	this.spawn.update();
 	this.others.update();

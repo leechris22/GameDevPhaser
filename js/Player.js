@@ -71,7 +71,10 @@ Player.prototype.checkHitBox = function(self, target) {
         target.damage(this.player.damage);
         this.attackSound.play();
 	} else { // player was attacked
-		this.takeDamage(target);
+        if (!game.global.debug)
+        {
+            this.takeDamage(target);
+        }
 	}
 };
 
