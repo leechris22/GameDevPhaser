@@ -26,16 +26,16 @@ let BubbleSpawner = function() {
                         'What do you mean, “they can’t stop me”?',
                         'How can I hear him, but not see him?',
                         'Why are you hiding?',
-                        'You’re not…one of them, are you Billy?',
+                        'You’re not… one of them, are you Billy?',
                         'Billy!?'
                         ];
     
     this.insaneLines = [
                         'Don’t stop moving.',
-                        'DON’T STOP…KILLING!',
+                        'DON’T STOP… KILLING!',
                         'Kill or be killed, just like the rest of them.',
-                        'This is…exhilarating.',
-                        'More…more blood.',
+                        'This is… exhilarating.',
+                        'More… more blood.',
                         'All I see is red.',
                         'Kill them ALL.',
                         'Wake UP.',
@@ -59,8 +59,10 @@ BubbleSpawner.prototype.getText = function() {
 
 
 BubbleSpawner.prototype.update = function() {
-    this.totalElapsed += game.time.elapsedMS / 1000.0;
-    
+    if (!game.global.player.player.movingLeft && !game.global.player.player.movingUp &&
+        !game.global.player.player.movingDown && !game.global.player.player.movingRight) {
+        this.totalElapsed += game.time.elapsedMS / 1000.0;
+    }
     if (this.totalElapsed > this.timeForNextSpawn && this.spawnedBubbles < this.maxBubbles) {
         let spawnBoxIndex = Math.floor(this.spawnBoxes[this.cutoffIndex].length * Math.random());
         let randX = Math.random();
