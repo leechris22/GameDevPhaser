@@ -42,6 +42,13 @@ let BubbleSpawner = function() {
                         'TEAR THE WALLS DOWN.',
                         'THEY CAN’T STOP ME.'
                         ];
+    this.nodistorted = game.add.audio('mainsoundtrack', 1, false);
+    this.softdistorted = game.add.audio('softdistorted', 1, false);
+    this.superdistorted = game.add.audio('superdistorted', 1, false);
+    this.hyperdistorted = game.add.audio('hyperdistorted', 1, false);
+    this.audioTime = game.time.now;
+    this.nodistorted.play();
+    this.soundtrackLength = 63.6;
 }
 
 BubbleSpawner.prototype.getText = function() {
@@ -63,6 +70,32 @@ BubbleSpawner.prototype.update = function() {
         !game.global.player.player.movingDown && !game.global.player.player.movingRight) {
         this.totalElapsed += game.time.elapsedMS / 1000.0;
     }
+    
+    
+    //this.audioTime += game.time.elapsedMS / 1000.0;
+    if (game.time.now - this.audioTime > this.soundtrackLength * 1000)
+    {
+        this.audioTime = game.time.now;//this.soundtrackLength;
+        this.nodistorted.stop();
+        this.softdistorted.stop();
+        this.superdistorted.stop();
+        this.hyperdistorted.stop();
+        
+        if (this.cutoffIndex == 0) {
+            this.nodistorted.play();
+        }
+        else if (this.cutoffIndex == 1) {
+            this.softdistorted.play();
+        }
+        else if (this.cutoffIndex == 2) {
+            this.superdistorted.play();
+        }
+        else {
+            this.hyperdistorted.play();
+        }
+    }
+    
+    
     if (this.totalElapsed > this.timeForNextSpawn && this.spawnedBubbles < this.maxBubbles) {
         let spawnBoxIndex = Math.floor(this.spawnBoxes[this.cutoffIndex].length * Math.random());
         let randX = Math.random();
@@ -79,6 +112,5 @@ BubbleSpawner.prototype.update = function() {
         }
         this.timeForNextSpawn += this.spawnTimeConstant[this.cutoffIndex];
     }
-    
     
 };
