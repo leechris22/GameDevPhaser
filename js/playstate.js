@@ -39,9 +39,9 @@ playState.prototype.create = function() {
 	game.camera.resetFX;
 
     // Set up the UI
-	//game.global.UI = new UI(10);
-    //game.global.bubbles = [];
-    //game.global.bubbleSpawner = new BubbleSpawner();
+	game.global.UI = new UI(this.game.global.player.player.maxHealth);
+    game.global.bubbles = [];
+    game.global.bubbleSpawner = new BubbleSpawner();
     //game.global.bubbles.push(new Bubble(5, "hello hello hello hello hello hello"));
 	//cursors = game.input.keyboard.createCursorKeys();
 
