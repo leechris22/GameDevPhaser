@@ -47,8 +47,6 @@ Player.prototype.create = function(x, y) {
 	this.bullets.setAll("anchor.y", 0.5);
 	this.bullets.setAll("body.width", 20);
 	this.bullets.setAll("body.height", 20);
-
-
 };
 
 Player.prototype.update = function() {
