@@ -6,12 +6,12 @@ let menuState = function() {
 // Override create, start MenuState
 menuState.prototype.create = function() {
 	// Add background
-	//this.background = game.add.sprite(0, 0, "Titlescreen");	
+	this.background = game.add.sprite(0, 0, "Title");
 	
 	// Add game title text
 	let style = {
 		font: "bold 160pt Arial",
-		fill: "#ffffff",
+		fill: "#ff0000",
 		align: "center"
 	};
 	this.text = game.add.text(game.world.centerX, game.world.centerY-100, game.global.title, style);

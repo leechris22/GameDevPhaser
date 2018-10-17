@@ -6,6 +6,7 @@ let preloadState = function() {
 // Load all assets
 preloadState.prototype.preload = function() {
 	// INSERT IMAGES
+    game.load.image("Title", "assets/Images/Title_Screen.png");
     //game.load.image("Titlescreen", "assets/Images/titlescreen.png");
     //game.load.image("Endscreen", "assets/Images/endscreen.png");
 	game.load.spritesheet("StartButton", "assets/Images/startbutton.png", 150, 50);
