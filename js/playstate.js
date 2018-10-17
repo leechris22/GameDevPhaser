@@ -12,6 +12,10 @@ playState.prototype.create = function() {
 	game.world.setBounds(0, 0, 9600, 4480);
 	game.physics.startSystem(Phaser.Physics.ARCADE);
 
+	// Create the global player
+	game.global.player = new Player();
+	game.global.player.create(100, 100);	
+
 	// Add map to game
 	map = game.add.tilemap("levelmap");
 	map.addTilesetImage("leveltileset", "leveltiles");
@@ -19,28 +23,31 @@ playState.prototype.create = function() {
 	//fenceLayer = map.createLayer("Fences");
 	groundLayer.scrollFactorX = 0.5;
 	groundLayer.scrollFactorY = 0.5;
-	//fenceLayer.scrollFactorX = 0.5;
-	//fenceLayer.scrollFactorY = 0.5;
-	
-	// Create the global player
-	game.global.player = new Player();
-	game.global.player.create(100, 100);	
-
-    // Set up the UI
-	game.global.UI = new UI(game, game.global.player.player.maxHealth);
-    game.global.bubbles = [];
-    game.global.bubbleSpawner = new BubbleSpawner();
-	
+	fenceLayer.scrollFactorX = 0.5;
+	fenceLayer.scrollFactorY = 0.5;
+		
 	// Initialize player dependent classes
 	this.spawn = new Spawn(game, 20);
-	this.others = new Others(game, 10500, 5);
+	this.others = new Others(game, 5000, 5);
 	
-
 	// Set up the camera
 	this.mainCamera = game.camera;
     game.camera.follow(game.global.player.player);
 	game.camera.scale.setTo(game.global.scale);
 	game.camera.resetFX;
+
+	let fences = fenceLayer.getTiles(0, 0, 9600, 4480);
+	console.log(fences)
+	for (let i = 0; i < fences.length; i++) {
+		if (fences[i].index != -1) {
+			this.others.spawnWall(fences[i].worldX, fences[i].worldY);
+		}
+	};
+    // Set up the UI
+	game.global.UI = new UI(game, game.global.player.player.maxHealth);
+    game.global.bubbles = [];
+    game.global.bubbleSpawner = new BubbleSpawner();
+
 };
 
 // Override update
@@ -56,7 +63,7 @@ playState.prototype.update = function() {
 
 	// TESTING
 	//game.debug.cameraInfo(this.mainCamera, 1000, 50);
-	//game.debug.spriteInfo(this.game.global.player.player, 100, 50);
+	game.debug.spriteInfo(this.game.global.player.player, 100, 50);
 };
 
 
