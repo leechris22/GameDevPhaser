@@ -6,9 +6,10 @@ let menuState = function() {
 // Override create, start MenuState
 menuState.prototype.create = function() {
 	// Add background
-	this.background = game.add.sprite(0, 0, "Titlescreen");
+	this.background = game.add.sprite(0, 0, "Titlescreen");	
 	this.music = game.add.audio("StartSoundtrack", 1, true);
-	console.log(this.music);
+	this.music.play();
+	
 	// Add game title text
 	let style = {
 		font: "bold 60pt Arial",
