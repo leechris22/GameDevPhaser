@@ -48,13 +48,11 @@ BubbleSpawner.prototype.getText = function() {
     if (this.cutoffIndex < 1)
     {
         let randIndex = Math.floor(this.normalLines.length * Math.random());
-        console.log(randIndex);
         return this.normalLines[randIndex];
     }
     else
     {
         let randIndex = Math.floor(this.insaneLines.length * Math.random());
-        console.log(randIndex);
         return this.insaneLines[randIndex];
     }
 };

@@ -21,6 +21,7 @@ let Bubble = function(timeToFade, textToDisplay, spawnX, spawnY) {
     this.textSprite.alpha = 0;
     this.bubbleSprite.anchor.setTo(0.5);
     this.textSprite.anchor.setTo(1.0);
+    this.moveCounter = 0;
 };
 
 Bubble.prototype = Object.create(Phaser.Sprite.prototype);
@@ -37,11 +38,19 @@ Bubble.prototype.update = function() {
     this.textSprite.alpha = newAlpha;
     this.moveUp();
     this.moveUp();
-    /*
-    let randAngle = 6.28 * Math.random();
-    //this.bubbleSprite.x = this.bubblex + 100 * Math.cos(randAngle);
-    //this.bubbleSprite.y = this.bubbley + 100 * Math.sin(randAngle);
-    this.bubbleSprite.x += (100 * Math.cos(randAngle));
-    this.bubbleSprite.y += (100 * Math.sin(randAngle));
-     */
+    
+    this.moveCounter++;
+    if (this.moveCounter == 10)
+    {
+        this.bubbleSprite.fixedToCamera = false;
+
+        let randAngle = 6.28 * Math.random();
+        this.bubbleSprite.x = this.bubblex + 10 * Math.cos(randAngle);
+        this.bubbleSprite.y = this.bubbley + 10 * Math.sin(randAngle);
+        this.bubbleSprite.fixedToCamera = true;
+        this.moveCounter = -1;
+    }
+    //this.bubbleSprite.x += (100 * Math.cos(randAngle));
+    //this.bubbleSprite.y += (100 * Math.sin(randAngle));
+    
 };
