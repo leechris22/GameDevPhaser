@@ -32,11 +32,13 @@ let Others = function(game, wallSize, pickupSize) {
 	this.pickups.setAll("body.height", pickup.height*this.scale);
 	this.pickups.setAll("body.offset.x", -pickup.width/this.scale);
 	this.pickups.setAll("body.offset.y", -pickup.height/this.scale);
+
+	this.counter = 0;
 };
 
 // For each frame
 Others.prototype.update = function() {
-	this.game.physics.arcade.collide(this.player, this.walls);
+	//this.game.physics.arcade.collide(this.player, this.walls);
 	this.game.physics.arcade.overlap(this.player, this.pickups, this.getPickup);
 
 	// TESTING
@@ -53,11 +55,16 @@ Others.prototype.update = function() {
 // Add a wall at cooredinate x, y
 // Return true if wall successfully added
 Others.prototype.spawnWall = function(x, y) {
-	let wall = this.walls.getFirstExists(false);
-	if (wall && this.game.world.bounds.contains(x,y)) {
+	let wall = this.walls.getAt(this.counter);
+	//console.log(this.walls.length);
+	//console.log(wall);
+	//console.log(this.game.world.bounds.contains(x,y));
+	//if (wall && this.game.world.bounds.contains(x,y)) {
+		wall.fixedToCamera = false;
 		wall.reset(x, y);
+		this.counter++;
 		return true;
-	}
+	//}
 	return false;
 }
 
