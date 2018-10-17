@@ -56,15 +56,12 @@ Others.prototype.update = function() {
 // Return true if wall successfully added
 Others.prototype.spawnWall = function(x, y) {
 	let wall = this.walls.getAt(this.counter);
-	//console.log(this.walls.length);
-	//console.log(wall);
-	//console.log(this.game.world.bounds.contains(x,y));
-	//if (wall && this.game.world.bounds.contains(x,y)) {
+	if (wall) {
 		wall.fixedToCamera = false;
 		wall.reset(x, y);
 		this.counter++;
 		return true;
-	//}
+	}
 	return false;
 }
 

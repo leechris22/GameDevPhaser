@@ -9,7 +9,7 @@ let playState = function() {
 // Override create
 playState.prototype.create = function() {
 	// Set the playing field
-	//game.world.setBounds(-1500, -750, 3000, 1500);
+	game.world.setBounds(0, 0, 9600, 4480);
 	game.physics.startSystem(Phaser.Physics.ARCADE);
 
 	// Add map to game
@@ -17,12 +17,11 @@ playState.prototype.create = function() {
 	map.addTilesetImage("leveltileset", "leveltiles");
 	groundLayer = map.createLayer("Ground");
 	fenceLayer = map.createLayer("Fences");
-	// Add the music and visuals
-	//this.background = game.add.sprite(-1500, -750, "Background");
-	//moving to bubbleSpawner.js
-    //music = game.add.audio('schoolgirl', 1, true);
-	//music.play();
-
+	groundLayer.scrollFactorX = 0.5;
+	groundLayer.scrollFactorY = 0.5;
+	fenceLayer.scrollFactorX = 0.5;
+	fenceLayer.scrollFactorY = 0.5;
+	
 	// Create the global player
 	game.global.player = new Player();
 	game.global.player.create(0, 0);	
@@ -34,29 +33,24 @@ playState.prototype.create = function() {
 	
 	// Initialize player dependent classes
 	this.spawn = new Spawn(game, 20);
-	this.others = new Others(game, 710, 5);
+	this.others = new Others(game, 10500, 5);
 	
 
 	// Set up the camera
 	this.mainCamera = game.camera;
     game.camera.follow(game.global.player.player);
-	//game.camera.scale.setTo(game.global.scale);
+	game.camera.scale.setTo(game.global.scale);
 	game.camera.resetFX;
 
-	var fences = fenceLayer.getTiles(0, 0, 2436, 1125);
-	//console.log(fences.length);
+	let fences = fenceLayer.getTiles(0, 0, 9600, 4480);
+	console.log(fences.length);
 	for(var i = 0; i < fences.length; i++) {
-		console.log(fences[i].index);
-		if(fences[i].index != 0) {
+		//console.log(fences[i].index);
+		if(fences[i].index > 0) {
 			this.others.spawnWall(fences[i].worldX * game.global.scale, fences[i].worldY * game.global.scale);
 			//console.log([fences[i].worldX, fences[i].worldY, fences[i].x, fences[i].y]);
 		}
 	};
-
-    //game.global.bubbles.push(new Bubble(5, "hello hello hello hello hello hello"));
-	//cursors = game.input.keyboard.createCursorKeys();
-
-	//enemy.body.immovable = true;
 };
 
 // Override update
