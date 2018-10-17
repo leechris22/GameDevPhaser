@@ -32,8 +32,8 @@ Player.prototype.create = function(x, y) {
     this.player.animations.add("right", [10,11,12,13,14,15,16,17,18], 6, true);
     this.player.animations.add("up", [5,6,7,8,9], 5, true);
     this.player.animations.add("down", [1,2,3,4], 5, true);
-	this.player.animations.add("damage", [0, 6, 7, 5], 5, false);
-	this.player.animations.add("death", [0, 5, 7, 6], 5, false);
+	this.player.animations.add("damage", [0, 0, 0, 0], 10, false);
+	this.player.animations.add("death", [0,5,10,19], 10, false);
 
     // set up player physics
     this.player.inputEnabled = true;

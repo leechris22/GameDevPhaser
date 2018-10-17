@@ -8,8 +8,8 @@ let Enemy = function(game, x, y, key = "Enemy", frame = 0) {
     this.animations.add("right", [10,11,12,13,14,15,16,17,18], 6, true);
     this.animations.add("up", [5,6,7,8,9], 5, true);
     this.animations.add("down", [1,2,3,4], 5, true);
-	this.animations.add("damage", [0,1,0,1,0], 5, false);
-	this.animations.add("death", [0,1,0,1,0], 5, false);
+	this.animations.add("damage", [0,0,0,0], 10, false);
+	this.animations.add("death", [0,5,10,19], 10, false);
 	this.deathSound = game.add.audio("zombiedeath", 0.4, false);
 	this.attackedSound = game.add.audio("zombiepain", 0.75, false);
 	
