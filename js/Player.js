@@ -29,7 +29,7 @@ Player.prototype.create = function(x, y) {
     this.player.animations.add("up", [5], 10, true);
     this.player.animations.add("down", [1,2,3,4], 10, true);
 	this.player.animations.add("damage", [0, 6, 7, 5], 5, false);
-	this.player.animations.add("death", [0,1,0,1,0], 5, false);
+	this.player.animations.add("death", [0, 5, 7, 6], 5, false);
 
     // set up player physics
     this.player.inputEnabled = true;
@@ -50,11 +50,13 @@ Player.prototype.create = function(x, y) {
 };
 
 Player.prototype.update = function() {
-    this.movement();
-    game.input.onTap.add(this.shoot, this);
-	game.debug.body(this.player);
-	if (this.bullets.getFirstExists(true)) {
-		game.debug.body(this.bullets.getFirstExists(true));
+	if (this.player.alive) {
+		this.movement();
+		game.input.onTap.add(this.shoot, this);
+		game.debug.body(this.player);
+		if (this.bullets.getFirstExists(true)) {
+			game.debug.body(this.bullets.getFirstExists(true));
+		}
 	}
 };
 
@@ -249,7 +251,7 @@ Player.prototype.kill = function() {
 	this.player.animations.stop();
 	this.player.animations.play("death");
 	this.player.events.onAnimationComplete.addOnce(function() {
-		this.game.state.start("EndState");
+		this.player.game.state.start("EndState");
 	}, this);
 	return this;
 };

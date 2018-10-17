@@ -6,6 +6,8 @@ let endState = function() {
 // Override create, start MenuState
 endState.prototype.create = function() {
 	// Add background
+	game.world.setBounds(0, 0, 2436, 1125);
+	game.camera.scale.setTo(1);
 	this.background = game.add.sprite(0, 0, "Endscreen");
 	
 	// Add game title text

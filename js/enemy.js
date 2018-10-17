@@ -49,27 +49,27 @@ Enemy.prototype.update = function() {
 // When the enemy takes damage, reduce hp by amount
 // At 0 hp, call kill function
 Enemy.prototype.damage = function(amount) {
-	// Apply invulnerability frames
-	this.active = false;
-	this.x += Phaser.Math.sign(this.player.body.velocity.x) * 50;
-	this.y += Phaser.Math.sign(this.player.body.velocity.y) * 50;
-	this.body.velocity.setTo(0);
-	this.body.checkCollision.none = true;
-	
-	// Take damage
-	this.health -= amount;
-	if (this.health <= 0) {
-		this.kill();
-		return true;
+	if (this.active) {
+		// Apply invulnerability frames
+		this.active = false;
+		this.x += Phaser.Math.sign(this.player.body.velocity.x) * 50;
+		this.y += Phaser.Math.sign(this.player.body.velocity.y) * 50;
+		this.body.velocity.setTo(0);
+		
+		// Take damage
+		this.health -= amount;
+		if (this.health <= 0) {
+			this.kill();
+			return true;
+		}
+		
+		// Play damaged animation
+		this.animations.play("damage");
+		this.events.onAnimationComplete.addOnce(function() {
+			this.active = true;
+		}, this);
+		return false;
 	}
-	
-	// Play damaged animation
-	this.animations.play("damage");
-	this.events.onAnimationComplete.addOnce(function() {
-		this.body.checkCollision.none = false;
-		this.active = true;
-	}, this);
-	return false;
 }
 
 // When this dies, play death animation
