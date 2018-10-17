@@ -57,10 +57,6 @@ Player.prototype.update = function() {
 	if (this.player.alive) {
 		this.movement();
 		game.input.onTap.add(this.shoot, this);
-		game.debug.body(this.player);
-		if (this.bullets.getFirstExists(true)) {
-			game.debug.body(this.bullets.getFirstExists(true));
-		}
 	}
 };
 
@@ -71,10 +67,7 @@ Player.prototype.checkHitBox = function(self, target) {
         target.damage(this.player.damage);
         this.attackSound.play();
 	} else { // player was attacked
-        if (!game.global.debug)
-        {
-            this.takeDamage(target);
-        }
+        this.takeDamage(target);
 	}
 };
 
